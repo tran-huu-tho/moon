@@ -7,6 +7,7 @@ namespace moon.Models
         public string Email { get; set; }         // Email đăng nhập
         public string Password { get; set; }      // Mật khẩu
         public string Phone { get; set; }         // Số điện thoại
-        public string Role { get; set; }          // Vai trò: "True - Admin" hoặc "False - Customer"
+        public bool Role { get; set; }          // Vai trò: "True - Admin" hoặc "False - Customer"
+        public byte[]? Avatar { get; set; }       //Thêm ảnh
     }
 }

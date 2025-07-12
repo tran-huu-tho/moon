@@ -3,6 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args); // ✅ Đặt lên trước
 
+builder.Services.AddDistributedMemoryCache(); // Bộ nhớ tạm cho session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Hết hạn sau 30 phút
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Kết nối CSDL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -24,7 +32,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
