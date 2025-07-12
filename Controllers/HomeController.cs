@@ -1,31 +1,16 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using moon.Models;
 
-namespace moon.Controllers;
-
-public class HomeController : Controller
+namespace moon.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Index() => View();
+        public IActionResult Contact() => View();
+        public IActionResult Shop() => View();
+        public IActionResult About() => View();
+        public IActionResult Cart() => View();
+        public IActionResult Checkout() => View();
+        public IActionResult ProductDetail() => View();
+        public IActionResult Instruct() => View();
     }
 }
