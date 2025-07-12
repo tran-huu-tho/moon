@@ -6,7 +6,7 @@
 <div class="custom-border-bottom py-3">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">About</strong></div>
+          <div class="col-md-12 mb-0"><a asp-controller="Home" asp-action="Index">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Giới thiệu</strong></div>
         </div>
       </div>
     </div>
@@ -19,8 +19,8 @@
               <span class="icon-truck"></span>
             </div>
             <div class="text">
-              <h2 class="text-uppercase">Free Shipping</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at iaculis quam. Integer accumsan tincidunt fringilla.</p>
+              <h2 style="font-family: 'Segoe UI', sans-serif;">GIAO HÀNG MIỄN PHÍ</h2>
+              <p>Chúng tôi hỗ trợ giao hàng miễn phí trên toàn quốc với mọi đơn hàng. Đảm bảo nhanh chóng, an toàn và đúng hẹn.</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">
@@ -28,8 +28,8 @@
               <span class="icon-refresh2"></span>
             </div>
             <div class="text">
-              <h2 class="text-uppercase">Free Returns</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at iaculis quam. Integer accumsan tincidunt fringilla.</p>
+              <h2 style="font-family: 'Segoe UI', sans-serif;">ĐỔI TRẢ DỄ DÀNG</h2>
+              <p>Bạn có thể đổi hoặc trả sản phẩm trong vòng 7 ngày nếu có lỗi từ nhà sản xuất. Quy trình đơn giản, không rườm rà.</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
@@ -37,8 +37,8 @@
               <span class="icon-help"></span>
             </div>
             <div class="text">
-              <h2 class="text-uppercase">Customer Support</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at iaculis quam. Integer accumsan tincidunt fringilla.</p>
+              <h2 style="font-family: 'Segoe UI', sans-serif;">HỖ TRỢ KHÁCH HÀNG</h2>
+              <p>Đội ngũ MOON luôn sẵn sàng hỗ trợ bạn 24/7. Nếu có bất kỳ thắc mắc nào, đừng ngần ngại liên hệ với chúng tôi.</p>
             </div>
           </div>
         </div>
@@ -47,37 +47,50 @@
 
 
     <div class="site-section custom-border-bottom" data-aos="fade">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md-6">
-            <div class="block-16">
-              <figure>
-                <img src="images/blog_1.jpg" alt="Image placeholder" class="img-fluid rounded">
-                <a href="https://vimeo.com/channels/staffpicks/93951774" class="play-button popup-vimeo"><span class="icon-play"></span></a>
-
-              </figure>
-            </div>
-          </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-5">
-            
-            
-            <div class="site-section-heading pt-3 mb-4">
-              <h2 class="text-black">How We Started</h2>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius repellat, dicta at laboriosam, nemo exercitationem itaque eveniet architecto cumque, deleniti commodi molestias repellendus quos sequi hic fugiat asperiores illum. Atque, in, fuga excepturi corrupti error corporis aliquam unde nostrum quas.</p>
-            <p>Accusantium dolor ratione maiores est deleniti nihil? Dignissimos est, sunt nulla illum autem in, quibusdam cumque recusandae, laudantium minima repellendus.</p>
-            
+  <div class="container">
+    <div class="row mb-5">
+      <!-- Video hoặc hình ảnh bên trái -->
+      <div class="col-md-6">
+        <div class="block-16">
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+            <iframe
+              src="https://www.youtube.com/embed/numCkbbyzJk?si=Zk1xQ3iEOTSE2FdR"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;">
+            </iframe>
           </div>
         </div>
       </div>
+
+      <!-- Nội dung bên phải -->
+      <div class="col-md-1"></div>
+
+      <div class="col-md-5">
+        <div class="site-section-heading pt-3 mb-4">
+          <h2 class="heading-with-line" style="font-family: 'Segoe UI', sans-serif;">CÂU CHUYỆN BẮT ĐẦU</h2>
+        </div>
+        <p>
+          MOON ra đời từ sự đam mê với cái đẹp dễ thương và sự tinh tế trong từng sản phẩm.
+          Chúng tôi bắt đầu với một ý tưởng đơn giản: tạo ra một không gian mua sắm mà mỗi món đồ đều mang lại cảm giác vui vẻ và dễ chịu cho người dùng.
+        </p>
+        <p>
+          Dù gặp không ít khó khăn ban đầu, chúng tôi vẫn không ngừng nỗ lực để cải thiện sản phẩm, dịch vụ và trải nghiệm mua sắm.
+          Sự hài lòng của khách hàng luôn là động lực để MOON phát triển mỗi ngày.
+        </p>
+      </div>
     </div>
+  </div>
+</div>
 
     <div class="site-section custom-border-bottom" data-aos="fade">
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-md-7 site-section-heading text-center pt-4">
-            <h2>The Team</h2>
+            <h2 class="heading-with-line" style="font-family: 'Segoe UI', sans-serif;">ĐỘI NGŨ CỦA CHÚNG TÔI</h2>
           </div>
         </div>
         <div class="row">
@@ -86,12 +99,12 @@
             <div class="block-38 text-center">
               <div class="block-38-img">
                 <div class="block-38-header">
-                  <img src="images/person_1.jpg" alt="Image placeholder" class="mb-4">
-                  <h3 class="block-38-heading h4">Elizabeth Graham</h3>
+                  <img src="~/images/WE2.jpg" alt="Image placeholder" class="mb-4">
+                  <h3 class="block-38-heading h4">Huỳnh Như Ý</h3>
                   <p class="block-38-subheading">CEO/Co-Founder</p>
                 </div>
                 <div class="block-38-body">
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aut minima nihil sit distinctio recusandae doloribus ut fugit officia voluptate soluta. </p>
+                  <p>Với tầm nhìn chiến lược và niềm đam mê sáng tạo, Như Ý là người đặt nền móng cho MOON. Cô luôn tin rằng sự khác biệt và bản lĩnh chính là chìa khóa để tạo nên giá trị bền vững cho cộng đồng.</p>
                 </div>
               </div>
             </div>
@@ -100,12 +113,12 @@
             <div class="block-38 text-center">
               <div class="block-38-img">
                 <div class="block-38-header">
-                  <img src="images/person_2.jpg" alt="Image placeholder" class="mb-4">
-                  <h3 class="block-38-heading h4">Jennifer Greive</h3>
+                  <img src="~/images/WE1.jpg" alt="Image placeholder" class="mb-4">
+                  <h3 class="block-38-heading h4">Nguyễn Quốc Dửng</h3>
                   <p class="block-38-subheading">Co-Founder</p>
                 </div>
                 <div class="block-38-body">
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aut minima nihil sit distinctio recusandae doloribus ut fugit officia voluptate soluta. </p>
+                  <p>Là người đồng sáng lập, Dửng mang đến tư duy logic và sức trẻ đổi mới. Anh luôn hướng đến sự hiệu quả trong từng quyết định, đồng thời không ngừng thúc đẩy đội ngũ phát triển vững mạnh.</p>
                 </div>
               </div>
             </div>
@@ -114,12 +127,12 @@
             <div class="block-38 text-center">
               <div class="block-38-img">
                 <div class="block-38-header">
-                  <img src="images/person_3.jpg" alt="Image placeholder" class="mb-4">
-                  <h3 class="block-38-heading h4">Patrick Marx</h3>
+                  <img src="~/images/WE3.jpg" alt="Image placeholder" class="mb-4">
+                  <h3 class="block-38-heading h4">Nguyễn Bá Minh</h3>
                   <p class="block-38-subheading">Marketing</p>
                 </div>
                 <div class="block-38-body">
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aut minima nihil sit distinctio recusandae doloribus ut fugit officia voluptate soluta. </p>
+                  <p>Minh là người đứng sau mọi chiến dịch truyền thông ấn tượng của MOON. Với tư duy sáng tạo và nhạy bén xu hướng, anh luôn biết cách đưa sản phẩm đến gần hơn với người dùng.</p>
                 </div>
               </div>
             </div>
@@ -128,12 +141,12 @@
             <div class="block-38 text-center">
               <div class="block-38-img">
                 <div class="block-38-header">
-                  <img src="images/person_4.jpg" alt="Image placeholder" class="mb-4">
-                  <h3 class="block-38-heading h4">Mike Coolbert</h3>
+                  <img src="~/images/WE4.jpg" alt="Image placeholder" class="mb-4">
+                  <h3 class="block-38-heading h4">Ngô Hoàng Kha</h3>
                   <p class="block-38-subheading">Sales Manager</p>
                 </div>
                 <div class="block-38-body">
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aut minima nihil sit distinctio recusandae doloribus ut fugit officia voluptate soluta. </p>
+                  <p>Kha là cầu nối quan trọng giữa sản phẩm và khách hàng. Với khả năng giao tiếp linh hoạt và tinh thần trách nhiệm cao, anh luôn mang đến trải nghiệm tốt nhất cho đối tác và người dùng. </p>
                 </div>
               </div>
             </div>

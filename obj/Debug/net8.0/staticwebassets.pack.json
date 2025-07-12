@@ -97,14 +97,6 @@
       "PackagePath": "staticwebassets\\fonts\\icomoon\\style.css"
     },
     {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\about_1.jpg",
-      "PackagePath": "staticwebassets\\images\\about_1.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\about_1.png",
-      "PackagePath": "staticwebassets\\images\\about_1.png"
-    },
-    {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\blog_1.jpg",
       "PackagePath": "staticwebassets\\images\\blog_1.jpg"
     },
@@ -123,6 +115,10 @@
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\cloth_3.jpg",
       "PackagePath": "staticwebassets\\images\\cloth_3.jpg"
+    },
+    {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\contact.png",
+      "PackagePath": "staticwebassets\\images\\contact.png"
     },
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\hero_1.jpg",
@@ -203,6 +199,10 @@
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\shoe_1.jpg",
       "PackagePath": "staticwebassets\\images\\shoe_1.jpg"
+    },
+    {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\thumnail_main.png",
+      "PackagePath": "staticwebassets\\images\\thumnail_main.png"
     },
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\women.jpg",
