@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "h1EsxaW+/CrhTzHeFYYlVkaupgyQABRPGnxk3kpaA6U=",
+  "Hash": "7L+mq7kJYQ9z+SZKN0nn034ZwC5E/VBVwh28sWIZYs4=",
   "Source": "moon",
   "BasePath": "_content/moon",
   "Mode": "Default",
@@ -490,6 +490,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\aokhoac.jpg"
+    },
+    {
+      "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\avt.jpg",
+      "SourceId": "moon",
+      "SourceType": "Discovered",
+      "ContentRoot": "Z:\\Đồ án 3\\moon\\wwwroot\\",
+      "BasePath": "_content/moon",
+      "RelativePath": "images/avt.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\avt.jpg"
     },
     {
       "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\blog_1.jpg",
