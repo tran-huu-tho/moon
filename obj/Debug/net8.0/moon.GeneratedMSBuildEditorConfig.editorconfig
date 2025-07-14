@@ -58,8 +58,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDdXN0b21lclxTaG9wLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[Z:/Đồ án 3/moon/Views/Home/Manager/Category.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNYW5hZ2VyXENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [Z:/Đồ án 3/moon/Views/Home/Manager/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNYW5hZ2VyXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/Đồ án 3/moon/Views/Home/Manager/Invoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNYW5hZ2VyXEludm9pY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/Đồ án 3/moon/Views/Home/Manager/Product.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNYW5hZ2VyXFByb2R1Y3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/Đồ án 3/moon/Views/Home/Manager/Statistical.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNYW5hZ2VyXFN0YXRpc3RpY2FsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [Z:/Đồ án 3/moon/Views/Shared/Error.cshtml]
