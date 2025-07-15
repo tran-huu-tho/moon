@@ -9,5 +9,6 @@ namespace moon.Controllers
         public IActionResult Category() => View("/Views/Home/Manager/Category.cshtml");
         public IActionResult Invoice() => View("/Views/Home/Manager/Invoice.cshtml");
         public IActionResult Statistical() => View("/Views/Home/Manager/Statistical.cshtml");
+        public IActionResult StatusOrder() => View("/Views/Home/Manager/StatusOrder.cshtml");
     }
 }

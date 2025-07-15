@@ -1,32 +1,24 @@
 @{
     Layout = "~/Views/Shared/Manager.cshtml";
-    ViewData["Title"] = "Hóa đơn";
+    ViewData["Title"] = "Trạng thái đơn hàng";
 }
 
 <div class="container-fluid">
 
                     <!-- Page Heading -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 text-gray-800">Danh sách hóa đơn</h1>
-                        
+                        <h1 class="h3 text-gray-800">Danh sách đơn hàng</h1>
+                            <a href="/Product/Add" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Lưu
+                            </a>
                     </div>
+
 
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Bảng hóa đơn:</h6>
-
-                            <!-- <div class="form-inline">
-                                <div class="form-group mb-0 mr-2">
-                                <label for="fromDate" class="mr-1 small">Từ</label>
-                                <input type="date" class="form-control form-control-sm" id="fromDate">
-                                </div>
-                                <div class="form-group mb-0">
-                                <label for="toDate" class="mr-1 small">Đến</label>
-                                <input type="date" class="form-control form-control-sm" id="toDate">
-                                </div>
-                            </div> -->
                             </div>
 
                         <div class="card-body">
@@ -34,12 +26,12 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Tên khách hàng</th>
-                                            <th>Chi tiết đơn hàng</th>
+                                            <th>ID đơn hàng</th>
+                                            <th>Chi tiết hóa đơn</th>
+                                            <th>Khách hàng</th>
                                             <th>Địa chỉ giao hàng</th>
-                                            <th>Tổng tiền</th>
                                             <th>Ngày đặt hàng</th>
-                                            <th>Ghi chú</th>
+                                            <th>Trạng thái đơn hàng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,15 +41,28 @@
                                             <td>123 Lê Lợi, Q.1, TP.HCM</td>
                                             <td>170,000đ</td>
                                             <td>2025-07-14</td>
-                                            <td>Giao trước 12h</td>
-                                            </tr>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+
                                             <tr>
                                             <td>Trần Thị B</td>
                                             <td>1 x Móc khóa One Piece, 1 x Nhẫn Akatsuki</td>
                                             <td>45 Nguyễn Huệ, Q.1, TP.HCM</td>
                                             <td>85,000đ</td>
                                             <td>2025-07-13</td>
-                                            <td>Không đá</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Lê Văn C</td>
@@ -65,7 +70,13 @@
                                             <td>90 Hoàng Văn Thụ, Q.Phú Nhuận</td>
                                             <td>165,000đ</td>
                                             <td>2025-07-13</td>
-                                            <td>Gọi trước khi giao</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Phạm Thị D</td>
@@ -73,7 +84,13 @@
                                             <td>12 Trường Sa, Q.Bình Thạnh</td>
                                             <td>420,000đ</td>
                                             <td>2025-07-12</td>
-                                            <td>Đừng bấm chuông</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Đặng Minh E</td>
@@ -81,7 +98,13 @@
                                             <td>78 CMT8, Q.10</td>
                                             <td>130,000đ</td>
                                             <td>2025-07-12</td>
-                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Ngô Nhật F</td>
@@ -89,7 +112,13 @@
                                             <td>55 Lạc Long Quân, Q.11</td>
                                             <td>145,000đ</td>
                                             <td>2025-07-11</td>
-                                            <td>Ưu tiên giao nhanh</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Hồ Mai G</td>
@@ -97,7 +126,13 @@
                                             <td>111 Pasteur, Q.3</td>
                                             <td>185,000đ</td>
                                             <td>2025-07-10</td>
-                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Võ Hữu H</td>
@@ -105,7 +140,13 @@
                                             <td>234 Lý Thường Kiệt, Q.Tân Bình</td>
                                             <td>310,000đ</td>
                                             <td>2025-07-10</td>
-                                            <td>Giao ban ngày</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Trịnh Ái I</td>
@@ -113,7 +154,13 @@
                                             <td>66 Phan Xích Long, Q.Phú Nhuận</td>
                                             <td>90,000đ</td>
                                             <td>2025-07-09</td>
-                                            <td>Đặt lần 2</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Nguyễn Nhật J</td>
@@ -121,7 +168,13 @@
                                             <td>19/5 Quang Trung, Gò Vấp</td>
                                             <td>110,000đ</td>
                                             <td>2025-07-09</td>
-                                            <td>Liên hệ Zalo trước</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Trần Văn K</td>
@@ -129,7 +182,13 @@
                                             <td>123 Trần Hưng Đạo, Q.5</td>
                                             <td>220,000đ</td>
                                             <td>2025-07-08</td>
-                                            <td>Đặt giúp bạn gái</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Lý Minh L</td>
@@ -137,7 +196,13 @@
                                             <td>87 Võ Văn Tần, Q.3</td>
                                             <td>60,000đ</td>
                                             <td>2025-07-08</td>
-                                            <td>Giao nhanh</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Đoàn Phương M</td>
@@ -145,7 +210,13 @@
                                             <td>98 Tôn Thất Thuyết, Q.4</td>
                                             <td>150,000đ</td>
                                             <td>2025-07-07</td>
-                                            <td></td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                             <tr>
                                             <td>Nguyễn Thị N</td>
@@ -153,7 +224,13 @@
                                             <td>08 Trường Chinh, Q.Tân Phú</td>
                                             <td>180,000đ</td>
                                             <td>2025-07-07</td>
-                                            <td>Đừng để ngoài cửa</td>
+                                            <td>
+                                                <select>
+                                                    <option selected>Đang chờ</option>
+                                                    <option>Giao hàng thành công</option>
+                                                    <option>Đã hủy đơn hàng</option>
+                                                </select>
+                                            </td>
                                             </tr>
                                         </tbody>
                                 </table>
