@@ -19,7 +19,7 @@ namespace moon.Controllers
         {
             var emailSender = new EmailSender();
 
-            string to = "ththohttt2211032@student.ctuet.edu.vn"; 
+            string to = "dungnguyen6904@gmail.com"; 
             string emailSubject = $"[GÓP Ý] {subject ?? "(Không có tiêu đề)"} từ {name}";
             string body = $@"
                 <h3>Thông tin góp ý từ khách hàng</h3>
