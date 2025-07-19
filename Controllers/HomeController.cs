@@ -13,13 +13,15 @@ namespace moon.Controllers
         public IActionResult Checkout() => View("~/Views/Home/Customer/Checkout.cshtml");
         public IActionResult ProductDetail() => View("~/Views/Home/Customer/ProductDetail.cshtml");
         public IActionResult Instruct() => View("~/Views/Home/Customer/Instruct.cshtml");
+        public IActionResult Profile() => View("~/Views/Home/Customer/Profile.cshtml"); 
+
 
          [HttpPost]
         public async Task<IActionResult> SendContact(string name, string email, string subject, string message)
         {
             var emailSender = new EmailSender();
 
-            string to = "ththohttt2211032@student.ctuet.edu.vn"; 
+            string to = "dungnguyen6904@gmail.com"; 
             string emailSubject = $"[GÓP Ý] {subject ?? "(Không có tiêu đề)"} từ {name}";
             string body = $@"
                 <h3>Thông tin góp ý từ khách hàng</h3>

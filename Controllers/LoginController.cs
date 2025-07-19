@@ -3,6 +3,7 @@ using moon.Models;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using moon.Controllers; 
 
 namespace moon.Controllers
 {
@@ -22,7 +23,7 @@ namespace moon.Controllers
             return View();
         }
 
-        [HttpPost]
+         [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
@@ -30,7 +31,22 @@ namespace moon.Controllers
             if (user != null)
             {
                 TempData["Success"] = "Đăng nhập thành công!";
-                HttpContext.Session.SetString("UserName", user.Name); // Ghi tên vào session
+                HttpContext.Session.SetString("UserName", user.Name);
+                HttpContext.Session.SetString("Email", user.Email);
+                HttpContext.Session.SetString("Phone", user.Phone ?? "");
+ 
+                    string avatarString;
+                if (user.Avatar != null)
+                {
+                    string base64Avatar = Convert.ToBase64String(user.Avatar);
+                    avatarString = $"data:image/png;base64,{base64Avatar}";
+                }
+                else
+                {
+                    avatarString = "/images/avt.jpg";
+                }
+
+                HttpContext.Session.SetString("Avatar", avatarString);
 
                 if (user.Role)
                     return RedirectToAction("Index", "Manager");
@@ -50,7 +66,7 @@ namespace moon.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(string name, string email, string password)
+        public async Task<IActionResult> Register(string name, string email, string password)
         {
             var existingUser = _context.Users.FirstOrDefault(u => u.Email == email);
             if (existingUser != null)
@@ -58,6 +74,9 @@ namespace moon.Controllers
                 ViewBag.Error = "Email đã được sử dụng, vui lòng chọn email khác!";
                 return View();
             }
+
+            var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/avt.jpg");
+            byte[] avatarBytes = System.IO.File.Exists(avatarPath) ? System.IO.File.ReadAllBytes(avatarPath) : Array.Empty<byte>();
 
             var newUser = new User
             {
@@ -67,26 +86,40 @@ namespace moon.Controllers
                 Password = password,
                 Phone = "",
                 Role = false,
-                Avatar = null
+                Avatar = avatarBytes
             };
 
             _context.Users.Add(newUser);
             _context.SaveChanges();
 
+            // === GỬI EMAIL CHÀO MỪNG ===
+            var emailSender = new EmailSender();
+            string subject = "Chào mừng bạn đến với Moon Shop!";
+            string body = $@"
+                <h2>🌙 Chào mừng {name} đến với Moon Shop!</h2>
+                <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Moon</strong> – nơi chuyên cung cấp các phụ kiện anime chất lượng.</p>
+                <p>Bạn đã sẵn sàng khám phá thế giới anime chưa?</p>
+                <p>Hãy <a href='http://localhost:5177/'>truy cập cửa hàng</a> để xem ngay các sản phẩm mới nhất!</p>
+                <hr>
+                <p style='font-size:12px;color:gray;'>Đây là email tự động, vui lòng không trả lời.</p>
+            ";
+            await emailSender.SendEmailAsync(email, subject, body);
+
             TempData["Success"] = "Đăng ký thành công! Hãy đăng nhập.";
             return RedirectToAction("Login");
+            
         }
 
         // ======= LOGOUT =======
         public IActionResult Logout()
         {
-         // Xóa session
-         HttpContext.Session.Clear();
+            // Xóa session
+            HttpContext.Session.Clear();
 
-        // Xóa luôn thông báo TempData
-        TempData.Clear();
+            // Xóa luôn thông báo TempData
+            TempData.Clear();
 
-        return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         // ======= AUTO ID (ND01, ND02...) =======
@@ -109,5 +142,6 @@ namespace moon.Controllers
 
             return "ND01";
         }
+        
     }
 }
