@@ -4,15 +4,59 @@
     var avatarUrl = ViewBag.Avatar as string ?? "/images/avt.jpg";
 }
 
+<style>
+    .avatar-wrapper {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: auto;
+        cursor: pointer;
+    }
+
+    .avatar-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+    }
+
+    .change-avatar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: 0.3s ease;
+        color: white;
+        font-size: 24px;
+    }
+
+    .avatar-wrapper:hover .change-avatar-overlay {
+        opacity: 1;
+    }
+</style>
+
 <div class="container mt-5">
     <div class="text-center mb-4">
-        <img src="@avatarUrl" alt="Avatar" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #ddd;">
+        <div class="avatar-wrapper">
+            <img src="@avatarUrl" alt="Avatar" class="avatar-img" id="previewAvatar" />
+            <div class="change-avatar-overlay">
+                <i class="fas fa-upload"></i>
+            </div>
+            <input type="file" name="Avatar" id="avatarInput" class="d-none" accept="image/*" form="profileForm" />
+        </div>
         <h3 class="mt-3">@ViewBag.HoTen</h3>
     </div>
 
     <h4 class="mb-4">Thông tin tài khoản</h4>
 
-    @* Hiển thị thông báo lỗi hoặc thành công *@
     @if (ViewBag.Error != null)
     {
         <div class="alert alert-danger">@ViewBag.Error</div>
@@ -22,7 +66,7 @@
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <form method="post" asp-controller="Profile" asp-action="Index">
+    <form id="profileForm" method="post" asp-controller="Profile" asp-action="Index" enctype="multipart/form-data">
         <div class="form-group">
             <label>Họ Tên</label>
             <input type="text" name="Name" class="form-control" value="@ViewBag.HoTen" />
@@ -65,3 +109,20 @@
         <button type="submit" class="btn btn-danger mt-3">Lưu thay đổi</button>
     </form>
 </div>
+
+<script>
+    document.querySelector(".avatar-wrapper").addEventListener("click", function () {
+        document.getElementById("avatarInput").click();
+    });
+
+    document.getElementById("avatarInput").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById("previewAvatar").src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
