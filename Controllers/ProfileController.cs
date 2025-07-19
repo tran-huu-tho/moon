@@ -127,6 +127,7 @@ namespace moon.Controllers
             if (isChanged)
             {
                 _context.SaveChanges();
+                HttpContext.Session.SetString("UserName", user.Name);
                 TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
             }
 
