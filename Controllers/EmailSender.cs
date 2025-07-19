@@ -8,7 +8,7 @@ namespace moon.Controllers
     {
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            var fromAddress = new MailAddress("ththohttt2211032@student.ctuet.edu.vn", "Moon");
+            var fromAddress = new MailAddress("dungnguyen6904@gmail.com", "Moon");
             var toAddress = new MailAddress(toEmail);
             const string fromPassword = "lunz iygo mudu ghhq"; 
 
