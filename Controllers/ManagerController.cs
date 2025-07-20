@@ -113,5 +113,70 @@ namespace moon.Controllers
             return View("~/Views/Home/Manager/ProductDetails.cshtml", product); // ← CHÚ Ý tên đúng là ProductDetails
         }
 
+        [HttpGet]
+        public IActionResult EditProduct(string id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy sản phẩm!";
+                return RedirectToAction("Product");
+            }
+
+            ViewBag.Categories = _context.Categories.ToList();
+            return View("~/Views/Home/Manager/EditProduct.cshtml", product);
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct([FromForm] Product updatedProduct, IFormFile Image)
+        {
+            var existingProduct = _context.Products.FirstOrDefault(p => p.Id == updatedProduct.Id);
+            if (existingProduct == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy sản phẩm cần sửa!";
+                return RedirectToAction("Product");
+            }
+
+            try
+            {
+                // Cập nhật các thuộc tính
+                existingProduct.Name = updatedProduct.Name;
+                existingProduct.Description = updatedProduct.Description;
+                existingProduct.Price = updatedProduct.Price;
+                existingProduct.StockQuantity = updatedProduct.StockQuantity;
+                existingProduct.CategoryId = updatedProduct.CategoryId;
+
+                // Nếu có ảnh mới
+                if (Image != null && Image.Length > 0)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
+
+                    var savePath = Path.Combine(uploadsFolder, fileName);
+                    using (var stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        Image.CopyTo(stream);
+                    }
+
+                    var imageUrl = "/uploads/" + fileName;
+                    existingProduct.ImageUrls = new List<string> { imageUrl };
+                }
+
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Cập nhật sản phẩm thành công!";
+                return RedirectToAction("Product");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi khi cập nhật: " + ex.Message;
+                ViewBag.Categories = _context.Categories.ToList();
+                return View("~/Views/Home/Manager/EditProduct.cshtml", updatedProduct);
+            }
+        }
+
     }
 }

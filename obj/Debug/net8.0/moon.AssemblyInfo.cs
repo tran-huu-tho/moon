@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("moon")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8557c9ac036c96e19ac1dc74d7d815ca9a6a6a31")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0321e69df79c9bb83ebe0281c8fb4fb07989a442")]
 [assembly: System.Reflection.AssemblyProductAttribute("moon")]
 [assembly: System.Reflection.AssemblyTitleAttribute("moon")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
