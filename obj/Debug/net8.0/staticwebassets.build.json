@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7L+mq7kJYQ9z+SZKN0nn034ZwC5E/VBVwh28sWIZYs4=",
+  "Hash": "SkxeTS7dX6k1ujl2LjqTj4q10KsKjlCbF89m9r1X3aA=",
   "Source": "moon",
   "BasePath": "_content/moon",
   "Mode": "Default",
@@ -4499,6 +4499,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\scss\\utilities\\_text.scss"
+    },
+    {
+      "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\22577.png",
+      "SourceId": "moon",
+      "SourceType": "Discovered",
+      "ContentRoot": "Z:\\Đồ án 3\\moon\\wwwroot\\",
+      "BasePath": "_content/moon",
+      "RelativePath": "uploads/22577.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\22577.png"
     },
     {
       "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\vendor\\bootstrap\\js\\bootstrap.bundle.js",

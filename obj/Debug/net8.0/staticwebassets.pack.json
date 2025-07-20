@@ -945,6 +945,10 @@
       "PackagePath": "staticwebassets\\scss\\utilities\\_text.scss"
     },
     {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\22577.png",
+      "PackagePath": "staticwebassets\\uploads\\22577.png"
+    },
+    {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\vendor\\bootstrap\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\vendor\\bootstrap\\js\\bootstrap.bundle.js"
     },

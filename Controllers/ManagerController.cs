@@ -96,5 +96,22 @@ namespace moon.Controllers
                 return View("~/Views/Home/Manager/AddProduct.cshtml", product);
             }
         }
+
+        [HttpGet]
+        public IActionResult ViewProductDetail(string id)
+        {
+            var product = _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy sản phẩm!";
+                return RedirectToAction("Product");
+            }
+
+            return View("~/Views/Home/Manager/ProductDetails.cshtml", product); // ← CHÚ Ý tên đúng là ProductDetails
+        }
+
     }
 }
