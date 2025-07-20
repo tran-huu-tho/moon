@@ -4,90 +4,46 @@
 }
 
 <div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Loại sản phẩm</h1>
+        <a asp-controller="Manager" asp-action="AddCategory" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm loại sản phẩm
+        </a>
+    </div>
 
-                    <!-- Page Heading -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 text-gray-800">Loại sản phẩm</h1>
-                        <a asp-controller="Manager" asp-action="AddCategory" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Thêm loại sản phẩm
-                        </a>
-                    </div>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Bảng loại sản phẩm:</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                    <th>Tên loại</th>
-                                    <th>Tổng số sản phẩm</th>
-                                    <th>Tùy chọn</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                    <td>Thức ăn nhanh</td>
-                                    <td>24</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
+    <!-- DataTable -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Bảng loại sản phẩm:</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Tên loại</th>
+                            <th>Tổng số sản phẩm</th>
+                            <th>Tùy chọn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Categories)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.ProductCount</td>
+                                <td>
+                                    <a asp-action="DeleteCategory" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Xóa"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa loại sản phẩm này?');">
                                         <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>Nước giải khát</td>
-                                    <td>17</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>Món chay</td>
-                                    <td>9</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>Hải sản</td>
-                                    <td>12</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>Tráng miệng</td>
-                                    <td>7</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>Cơm phần</td>
-                                    <td>30</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                    </tr>
-                                </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

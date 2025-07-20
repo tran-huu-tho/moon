@@ -19,7 +19,21 @@ namespace moon.Controllers
         }
 
         public IActionResult Index() => View("~/Views/Home/Manager/Index.cshtml");
-        public IActionResult Category() => View("~/Views/Home/Manager/Category.cshtml");
+        public IActionResult Category()
+        {
+            // Lấy danh sách Category và đếm số sản phẩm từng loại
+            var categories = _context.Categories
+                .Select(c => new
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ProductCount = _context.Products.Count(p => p.CategoryId == c.Id)
+                })
+                .ToList();
+
+            ViewBag.Categories = categories;
+            return View("~/Views/Home/Manager/Category.cshtml");
+        }
         public IActionResult Invoice() => View("~/Views/Home/Manager/Invoice.cshtml");
         public IActionResult Statistical() => View("~/Views/Home/Manager/Statistical.cshtml");
         public IActionResult StatusOrder() => View("~/Views/Home/Manager/StatusOrder.cshtml");
@@ -184,6 +198,61 @@ namespace moon.Controllers
                 return View("~/Views/Home/Manager/EditProduct.cshtml", updatedProduct);
             }
         }
+        [HttpPost]
+        public IActionResult AddCategory(string CategoryName)
+        {
+            try
+            {
+                // Lấy loại sản phẩm cuối có mã bắt đầu bằng "PK"
+                var lastCategory = _context.Categories
+                    .Where(c => c.Id.StartsWith("PK"))
+                    .OrderByDescending(c => c.Id)
+                    .FirstOrDefault();
 
+                int nextNumber = 1;
+                if (lastCategory != null && int.TryParse(lastCategory.Id.Substring(2), out int lastNum))
+                {
+                    nextNumber = lastNum + 1;
+                }
+
+                var newCategory = new Category
+                {
+                    Id = $"PK{nextNumber:D3}",
+                    Name = CategoryName
+                };
+
+                _context.Categories.Add(newCategory);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Thêm loại sản phẩm thành công!";
+                return RedirectToAction("Category");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi khi thêm loại sản phẩm: " + ex.Message;
+                return View("~/Views/Home/Manager/AddCategory.cshtml");
+            }
+        }
+    public IActionResult DeleteCategory(string id)
+        {
+            var category = _context.Categories.Find(id);
+            if (category != null)
+            {
+                // Kiểm tra nếu không có sản phẩm thuộc loại thì mới xóa
+                var count = _context.Products.Count(p => p.CategoryId == id);
+                if (count == 0)
+                {
+                    _context.Categories.Remove(category);
+                    _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Xóa loại sản phẩm thành công.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không thể xóa loại sản phẩm đang có sản phẩm.";
+                }
+            }
+
+            return RedirectToAction("Category");
+        }
     }
 }
