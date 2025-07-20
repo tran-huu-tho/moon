@@ -7,7 +7,8 @@ namespace moon.Models
 {
     public class Product
     {
-        public string Id { get; set; }      // Mã sản phẩm
+        
+        public string Id { get; set; } = Guid.NewGuid().ToString();     // Mã sản phẩm
 
         public string Name { get; set; } = string.Empty;                // Tên sản phẩm
 

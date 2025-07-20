@@ -83,6 +83,11 @@ namespace moon.Controllers
                     var imageUrl = "/uploads/" + fileName;
                     product.ImageUrls = new List<string> { imageUrl };
                 }
+                else
+                {
+                    product.ImageUrls = new List<string>(); // 👈 thêm dòng này để tránh lỗi null
+                }
+
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
@@ -164,6 +169,8 @@ namespace moon.Controllers
                     var imageUrl = "/uploads/" + fileName;
                     existingProduct.ImageUrls = new List<string> { imageUrl };
                 }
+                // ❌ Không cần else ở đây vì bạn giữ nguyên ảnh cũ nếu không upload mới
+
 
                 _context.SaveChanges();
 
