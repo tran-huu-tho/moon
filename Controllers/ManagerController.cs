@@ -233,7 +233,7 @@ namespace moon.Controllers
                 return View("~/Views/Home/Manager/AddCategory.cshtml");
             }
         }
-    public IActionResult DeleteCategory(string id)
+        public IActionResult DeleteCategory(string id)
         {
             var category = _context.Categories.Find(id);
             if (category != null)
@@ -254,5 +254,32 @@ namespace moon.Controllers
 
             return RedirectToAction("Category");
         }
+
+
+        public IActionResult DeleteProduct(string id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy sản phẩm!";
+                return RedirectToAction("Product");
+            }
+
+            try
+            {
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Xóa sản phẩm thành công!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi khi xóa sản phẩm: " + ex.Message;
+            }
+
+            return RedirectToAction("Product");
+        }
+
     }
+
+
 }

@@ -2,6 +2,29 @@
     Layout = "~/Views/Shared/Manager.cshtml";
     ViewData["Title"] = "Loại sản phẩm";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: '@TempData["SuccessMessage"]'
+        });
+    </script>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: '@TempData["ErrorMessage"]'
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -28,22 +51,65 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ViewBag.Categories)
+                       @foreach (var item in ViewBag.Categories)
                         {
                             <tr>
                                 <td>@item.Name</td>
                                 <td>@item.ProductCount</td>
                                 <td>
-                                    <a asp-action="DeleteCategory" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Xóa"
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa loại sản phẩm này?');">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    @if (item.ProductCount > 0)
+                                    {
+                                        <button class="btn btn-secondary btn-sm" onclick="Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Không thể xóa',
+                                            text: 'Loại sản phẩm này đang có sản phẩm. Vui lòng xóa sản phẩm trước.'
+                                        })" title="Không thể xóa">
+                                            <i class="fas fa-ban"></i> Không thể xóa
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-delete-category"
+                                        data-id="@item.Id" title="Xóa">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </a>
+                                    }
                                 </td>
                             </tr>
                         }
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.btn-delete-category');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const categoryId = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn?',
+                        text: "Hành động này sẽ xóa loại sản phẩm!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirect đến action xóa
+                            window.location.href = '/Manager/DeleteCategory?id=' + categoryId;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
