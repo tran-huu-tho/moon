@@ -1,239 +1,159 @@
+@model IEnumerable<moon.Models.Product>
+
 @{
-    Layout = "~/Views/Shared/Layout.cshtml";
-    ViewData["Title"] = "Cửa hàng";
+  Layout = "~/Views/Shared/Layout.cshtml";
+  ViewData["Title"] = "Cửa hàng";
 }
+<style>
+  .product-item {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    /* Vuông hình */
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
 
-    <div class="custom-border-bottom py-3">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 mb-0"><a asp-controller="Home" asp-action="Index">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cửa hàng</strong></div>
-        </div>
-      </div>
+  .product-item:hover {
+    transform: scale(1.02);
+  }
+
+  .product-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.712);
+    /* nền mờ đen */
+    color: black;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .item-title {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .item-price {
+    font-size: 16px;
+    display: block;
+  }
+</style>
+
+<div class="custom-border-bottom py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-0"><a asp-controller="Home" asp-action="Index">Trang chủ</a> <span
+          class="mx-2 mb-0">/</span> <strong class="text-black">Cửa hàng</strong></div>
     </div>
+  </div>
+</div>
 
-    <div class="site-section">
-      <div class="container">
+<div class="site-section">
+  <div class="container">
+
+    <div class="row mb-5">
+      <div class="col-md-9 order-1">
+
+        <div class="row align">
+          <div class="col-md-12 mb-5">
+            <div class="float-md-left">
+              <h2 class="text-black h5">
+                @if (ViewBag.SelectedCategory != null)
+                {
+                  <text>Sản phẩm thuộc loại: @ViewBag.SelectedCategory</text>
+                }
+                else
+                {
+                  <text>Tất cả sản phẩm</text>
+                }
+              </h2>
+            </div>
+            <div class="d-flex">
+              <div class="dropdown mr-1 ml-md-auto">
+                <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuOffset"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Giá
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                  <a class="dropdown-item" asp-controller="Home" asp-action="Customer"
+                    asp-route-sortOrder="price_desc">Giá cao đến thấp</a>
+                  <a class="dropdown-item" asp-controller="Home" asp-action="Customer"
+                    asp-route-sortOrder="price_asc">Giá thấp đến cao</a>
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="row mb-5">
-          <div class="col-md-9 order-1">
-
-            <div class="row align">
-              <div class="col-md-12 mb-5">
-                <div class="float-md-left"><h2 class="text-black h5">Shop All</h2></div>
-                <div class="d-flex">
-                  <div class="dropdown mr-1 ml-md-auto">
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Latest
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                      <a class="dropdown-item" href="#">Men</a>
-                      <a class="dropdown-item" href="#">Women</a>
-                      <a class="dropdown-item" href="#">Children</a>
-                    </div>
-                  </div>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                      <a class="dropdown-item" href="#">Relevance</a>
-                      <a class="dropdown-item" href="#">Name, A to Z</a>
-                      <a class="dropdown-item" href="#">Name, Z to A</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Price, low to high</a>
-                      <a class="dropdown-item" href="#">Price, high to low</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-5">
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_2.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Gray Shoe</a></h2>
-                <strong class="item-price">$20.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_3.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_5.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
+          @foreach (var item in Model)
+          {
+            var imageUrl = item.ImageUrls.FirstOrDefault() ?? "/images/default.png";
+            <div class="col-lg-6 col-md-6 item-entry mb-4">
+              <a href="#" class="product-item d-block" style="background-image: url('@imageUrl');">
+                <div class="product-overlay">
+                  <h2 class="item-title">@item.Name</h2>
+                  <strong class="item-price text-danger">@item.Price.ToString("C0", new
+                                      System.Globalization.CultureInfo("vi-VN"))</strong>
 
               </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Smooth Cloth</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_7.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-                <strong class="item-price">$58.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_2.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Gray Shoe</a></h2>
-                <strong class="item-price">$20.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_3.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_5.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/prod_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Smooth Cloth</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="images/model_7.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-                <strong class="item-price">$58.00</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <div class="site-block-27">
-                  <ul>
-                    <li><a href="#">&lt;</a></li>
-                    <li class="active"><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">&gt;</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            </a>
           </div>
+                    }
+        </div>
 
-          <div class="col-md-3 order-2 mb-5 mb-md-0">
-            <div class="border p-4 rounded mb-4">
-              <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
-              <ul class="list-unstyled mb-0">
-                <li class="mb-1"><a href="#" class="d-flex"><span>Men</span> <span class="text-black ml-auto">(2,220)</span></a></li>
-                <li class="mb-1"><a href="#" class="d-flex"><span>Women</span> <span class="text-black ml-auto">(2,550)</span></a></li>
-                <li class="mb-1"><a href="#" class="d-flex"><span>Children</span> <span class="text-black ml-auto">(2,124)</span></a></li>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <div class="site-block-27">
+              <ul>
+                <li><a href="#">&lt;</a></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&gt;</a></li>
               </ul>
-            </div>
-
-            <div class="border p-4 rounded mb-4">
-              <div class="mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
-                <div id="slider-range" class="border-primary"></div>
-                <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white" disabled="" />
-              </div>
-
-              <div class="mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Size</h3>
-                <label for="s_sm" class="d-flex">
-                  <input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span class="text-black">Small (2,319)</span>
-                </label>
-                <label for="s_md" class="d-flex">
-                  <input type="checkbox" id="s_md" class="mr-2 mt-1"> <span class="text-black">Medium (1,282)</span>
-                </label>
-                <label for="s_lg" class="d-flex">
-                  <input type="checkbox" id="s_lg" class="mr-2 mt-1"> <span class="text-black">Large (1,392)</span>
-                </label>
-              </div>
-
-              <div class="mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Color</h3>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-danger color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Red (2,429)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-success color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Green (2,298)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-info color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Blue (1,075)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-primary color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Purple (1,075)</span>
-                </a>
-              </div>
-
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="col-md-3 order-2 mb-5 mb-md-0">
+        <div class="border p-4 rounded mb-4">
+          <h3 class="mb-3 h6 text-uppercase text-black d-block">Loại sản phẩm</h3>
+          <ul style="list-style-type: none; padding-left: 0; margin: 0;">
+            @foreach (var cat in ViewBag.CategoryCounts)
+            {
+              <li class="mb-1">
+               <a asp-controller="Home" asp-action="FilterByCategory" asp-route-categoryName="@cat.CategoryName" class="d-flex">
+                  <span>@cat.CategoryName</span>
+                  <span class="text-black ml-auto">(@cat.ProductCount)</span>
+                </a>
+              </li>
+            }
+          </ul>
+
+        </div>
+
+        <div class="border p-4 rounded mb-4">
+          <div class="mb-4">
+            <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
+            <div id="slider-range" class="border-primary"></div>
+            <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white" disabled="" />
+          </div>
+
+        </div>
       </div>
     </div>
+
+  </div>
+</div>
