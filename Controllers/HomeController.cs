@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using moon.Controllers;
 using moon.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace moon.Controllers
 {
@@ -35,7 +37,13 @@ namespace moon.Controllers
         public IActionResult About() => View("~/Views/Home/Customer/About.cshtml");
         public IActionResult Cart() => View("~/Views/Home/Customer/Cart.cshtml");
         public IActionResult Checkout() => View("~/Views/Home/Customer/Checkout.cshtml");
-        public IActionResult ProductDetail() => View("~/Views/Home/Customer/ProductDetail.cshtml");
+        public IActionResult ProductDetail(string id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            return View("Customer/ProductDetail", product);
+        }
+
         public IActionResult Instruct() => View("~/Views/Home/Customer/Instruct.cshtml");
         public IActionResult Profile() => View("~/Views/Home/Customer/Profile.cshtml");
 
@@ -125,6 +133,5 @@ namespace moon.Controllers
 
     return View("Customer/Shop", filteredProducts);
 }
-
     }
 }
