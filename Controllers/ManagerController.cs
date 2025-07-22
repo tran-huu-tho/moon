@@ -38,6 +38,7 @@ namespace moon.Controllers
         public IActionResult Statistical() => View("~/Views/Home/Manager/Statistical.cshtml");
         public IActionResult StatusOrder() => View("~/Views/Home/Manager/StatusOrder.cshtml");
         public IActionResult AddCategory() => View("~/Views/Home/Manager/AddCategory.cshtml");
+        public IActionResult Profile() => View("~/Views/Home/Manager/Profile.cshtml");
 
         public IActionResult Product()
         {
