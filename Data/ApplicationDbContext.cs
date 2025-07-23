@@ -4,7 +4,7 @@ namespace moon.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -13,5 +13,7 @@ namespace moon.Models
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InventoryLog> InventoryLogs { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
     }
 }
