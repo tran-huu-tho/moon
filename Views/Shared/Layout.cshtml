@@ -1,186 +1,217 @@
 ﻿@using Microsoft.AspNetCore.Http
 @{
-    Layout = null;
-    var userName = Context.Session.GetString("UserName");
+  Layout = null;
+  var userName = Context.Session.GetString("UserName");
 }
 @RenderSection("Scripts", required: false)
 
+@if (TempData["Success"] != null)
+{
+  <div id="success-toast" class="position-fixed alert alert-success text-center" style="top: 50%; left: 50%; transform: translate(-50%, -50%);
+                  z-index: 1055; min-width: 300px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+    @TempData["Success"]
+  </div>
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - moon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8" />
+  <title>@ViewData["Title"] - moon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
-    <link rel="stylesheet" href="~/fonts/icomoon/style.css" />
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/magnific-popup.css" />
-    <link rel="stylesheet" href="~/css/jquery-ui.css" />
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="~/css/owl.theme.default.min.css" />
-    <link rel="stylesheet" href="~/css/aos.css" />
-    <link rel="stylesheet" href="~/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+  <link rel="stylesheet" href="~/fonts/icomoon/style.css" />
+  <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/magnific-popup.css" />
+  <link rel="stylesheet" href="~/css/jquery-ui.css" />
+  <link rel="stylesheet" href="~/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="~/css/owl.theme.default.min.css" />
+  <link rel="stylesheet" href="~/css/aos.css" />
+  <link rel="stylesheet" href="~/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
+
 <body>
-<div class="site-wrap">
+  <div class="site-wrap">
     <div class="site-navbar bg-white py-2">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="logo">
-                    <div class="site-logo">
-                        <a asp-controller="Home" asp-action="Index" class="js-logo-clone">🍃 MOON 🍃</a>
-                    </div>
-                </div>
-
-                <div class="main-nav d-none d-lg-block">
-                    <nav class="site-navigation text-right text-md-center" role="navigation">
-                        <ul class="site-menu js-clone-nav d-none d-lg-block">
-                            <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                            <li><a asp-controller="Home" asp-action="About">Giới thiệu</a></li>
-                            <li><a asp-controller="Home" asp-action="Shop">Cửa hàng</a></li>
-                            <li><a asp-controller="Home" asp-action="Instruct">Hướng dẫn</a></li>
-                            <li><a asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
-
-                            @if (string.IsNullOrEmpty(userName))
-                            {
-                                <li><a asp-controller="Login" asp-action="Login">Đăng nhập / Đăng ký</a></li>
-                            }
-                            else
-                            {
-                                <li class="d-lg-none dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@userName</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index">Hồ sơ</a></li>
-                                        <li><a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout">Đăng xuất</a></li>
-                                    </ul>
-                                </li>
-                            }
-                        </ul>
-                    </nav>
-                </div>
-
-                <div class="icons d-flex align-items-center">
-                    <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
-                    <a asp-controller="Home" asp-action="Cart" class="icons-btn d-inline-block bag">
-                        <span class="icon-shopping-bag"></span>
-                        <span class="number">2</span>
-                    </a>
-
-                    @if (!string.IsNullOrEmpty(userName))
-                    {
-                        <div class="dropdown d-none d-lg-inline-block ml-3">
-                            <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <strong style="font-size: 13px;">@userName</strong>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow-sm">
-                                <a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i class="fas fa-user-circle me-2"></i> Hồ sơ</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>
-                            </div>
-                        </div>
-                    }
-                    <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span class="icon-menu"></span></a>
-                </div>
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <div class="site-logo">
+              <a asp-controller="Home" asp-action="Index" class="js-logo-clone">🍃 MOON 🍃</a>
             </div>
+          </div>
+
+          <div class="main-nav d-none d-lg-block">
+            <nav class="site-navigation text-right text-md-center" role="navigation">
+              <ul class="site-menu js-clone-nav d-none d-lg-block">
+                <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li><a asp-controller="Home" asp-action="About">Giới thiệu</a></li>
+                <li><a asp-controller="Home" asp-action="Shop">Cửa hàng</a></li>
+                <li><a asp-controller="Home" asp-action="Instruct">Hướng dẫn</a></li>
+                <li><a asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
+
+                @if (string.IsNullOrEmpty(userName))
+                {
+                  <li><a asp-controller="Login" asp-action="Login">Đăng nhập / Đăng ký</a></li>
+                }
+                else
+                {
+                  <li class="d-lg-none dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@userName</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index">Hồ sơ</a></li>
+                      <li><a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
+                      </li>
+                    </ul>
+                  </li>
+                }
+              </ul>
+            </nav>
+          </div>
+
+          <div class="icons d-flex align-items-center">
+            <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+            <a asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
+              <span class="icon-shopping-bag"></span>
+              <span class="number">CC</span>
+            </a>
+
+
+            @if (!string.IsNullOrEmpty(userName))
+            {
+              <div class="dropdown d-none d-lg-inline-block ml-3">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                  data-toggle="dropdown" aria-expanded="false">
+                  <strong style="font-size: 13px;">@userName</strong>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                  <a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i
+                      class="fas fa-user-circle me-2"></i> Hồ sơ</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout"><i
+                      class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>
+                </div>
+              </div>
+            }
+            <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
+                class="icon-menu"></span></a>
+          </div>
         </div>
+      </div>
     </div>
 
     @RenderBody()
 
-   <footer class="site-footer custom-border-top">
-  <div class="container">
-    <div class="row">
-      <!-- Theo dõi (2 cột) -->
-      <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
-        <h3 class="footer-heading mb-4">Theo dõi</h3>
-        <div class="d-flex flex-column align-items-start">
-          <a href="https://facebook.com" target="_blank" class="mb-2 text-decoration-none" style="color: #3b5998;">
-            <i class="fab fa-facebook-f mr-2"></i> Facebook
-          </a>
-          <a href="https://instagram.com" target="_blank" class="mb-2 text-decoration-none" style="color: #e4405f;">
-            <i class="fab fa-instagram mr-2"></i> Instagram
-          </a>
-          <a href="https://youtube.com" target="_blank" class="mb-2 text-decoration-none" style="color: #ff0000;">
-            <i class="fab fa-youtube mr-2"></i> YouTube
-          </a>
-        </div>
-      </div>
-
-      <!-- Chính sách (6 cột) -->
-      <div class="col-md-12 col-lg-6 mb-4 mb-lg-0">
-        <h3 class="footer-heading mb-4">Chính sách</h3>
+    <footer class="site-footer custom-border-top">
+      <div class="container">
         <div class="row">
-          <div class="col-6 col-md-4">
-            <ul class="list-unstyled">
-              <li><a href="https://www.thegioididong.com/chinh-sach-xu-ly-du-lieu-ca-nhan">Dữ liệu cá nhân</a></li>
-              <li><a href="https://www.thegioididong.com/noi-quy-cua-hang">Nội quy cửa hàng</a></li>
-              <li><a href="https://www.thegioididong.com/chat-luong-phuc-vu">Chất lượng phục vụ</a></li>
-            </ul>
+          <!-- Theo dõi (2 cột) -->
+          <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
+            <h3 class="footer-heading mb-4">Theo dõi</h3>
+            <div class="d-flex flex-column align-items-start">
+              <a href="https://facebook.com" target="_blank" class="mb-2 text-decoration-none" style="color: #3b5998;">
+                <i class="fab fa-facebook-f mr-2"></i> Facebook
+              </a>
+              <a href="https://instagram.com" target="_blank" class="mb-2 text-decoration-none" style="color: #e4405f;">
+                <i class="fab fa-instagram mr-2"></i> Instagram
+              </a>
+              <a href="https://youtube.com" target="_blank" class="mb-2 text-decoration-none" style="color: #ff0000;">
+                <i class="fab fa-youtube mr-2"></i> YouTube
+              </a>
+            </div>
           </div>
-          <div class="col-6 col-md-4">
-            <ul class="list-unstyled">
-              <li><a href="https://www.thegioididong.com/tos">Quy chế TMDT</a></li>
-              <li><a href="https://www.thegioididong.com/chinh-sach-khui-hop-apple">Đặc trưng</a></li>
-              <li><a href="https://www.thegioididong.com/tin-tuc/can-trong-voi-nhung-sieu-thi-thegioididong-khong-chinh-chu--683321">Cảnh báo giả mạo</a></li>
-            </ul>
+
+          <!-- Chính sách (6 cột) -->
+          <div class="col-md-12 col-lg-6 mb-4 mb-lg-0">
+            <h3 class="footer-heading mb-4">Chính sách</h3>
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <ul class="list-unstyled">
+                  <li><a href="https://www.thegioididong.com/chinh-sach-xu-ly-du-lieu-ca-nhan">Dữ liệu cá nhân</a></li>
+                  <li><a href="https://www.thegioididong.com/noi-quy-cua-hang">Nội quy cửa hàng</a></li>
+                  <li><a href="https://www.thegioididong.com/chat-luong-phuc-vu">Chất lượng phục vụ</a></li>
+                </ul>
+              </div>
+              <div class="col-6 col-md-4">
+                <ul class="list-unstyled">
+                  <li><a href="https://www.thegioididong.com/tos">Quy chế TMDT</a></li>
+                  <li><a href="https://www.thegioididong.com/chinh-sach-khui-hop-apple">Đặc trưng</a></li>
+                  <li><a
+                      href="https://www.thegioididong.com/tin-tuc/can-trong-voi-nhung-sieu-thi-thegioididong-khong-chinh-chu--683321">Cảnh
+                      báo giả mạo</a></li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-4">
+                <ul class="list-unstyled">
+                  <li><a href="https://www.thegioididong.com/giao-hang">Vận chuyển</a></li>
+                  <li><a href="https://www.thegioididong.com/bao-hanh">Bảo hành</a></li>
+                  <li><a href="https://www.thegioididong.com/chinh-sach-bao-hanh-san-pham">Đổi trả</a></li>
+                  <li><a href="https://www.thegioididong.com/thanh-toan">Thanh toán</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="col-12 col-md-4">
+
+          <!-- Chúng tôi (4 cột + icon) -->
+          <div class="col-md-6 col-lg-4">
+            <h3 class="footer-heading mb-4">Chúng tôi</h3>
             <ul class="list-unstyled">
-              <li><a href="https://www.thegioididong.com/giao-hang">Vận chuyển</a></li>
-              <li><a href="https://www.thegioididong.com/bao-hanh">Bảo hành</a></li>
-              <li><a href="https://www.thegioididong.com/chinh-sach-bao-hanh-san-pham">Đổi trả</a></li>
-              <li><a href="https://www.thegioididong.com/thanh-toan">Thanh toán</a></li>
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt mr-2 text-danger"></i>
+                256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-phone-alt mr-2 text-success"></i>
+                +84 349 599 120
+              </li>
+              <li>
+                <i class="fas fa-envelope mr-2 text-primary"></i>
+                ththohttt2211032@student.ctuet.edu.vn
+              </li>
             </ul>
           </div>
         </div>
-      </div>
 
-      <!-- Chúng tôi (4 cột + icon) -->
-      <div class="col-md-6 col-lg-4">
-        <h3 class="footer-heading mb-4">Chúng tôi</h3>
-        <ul class="list-unstyled">
-          <li class="mb-2">
-            <i class="fas fa-map-marker-alt mr-2 text-danger"></i>
-            256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ
-          </li>
-          <li class="mb-2">
-            <i class="fas fa-phone-alt mr-2 text-success"></i>
-            +84 349 599 120
-          </li>
-          <li>
-            <i class="fas fa-envelope mr-2 text-primary"></i>
-            ththohttt2211032@student.ctuet.edu.vn
-          </li>
-        </ul>
+        <!-- Copyright -->
+        <div class="row pt-3 mt-3 text-center border-top" style="border-color: #333;">
+          <div class="col-md-12">
+            <p style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #666; margin-bottom: 0;">
+              Made with <span style="color: #ff4f81;">♥️</span> by <strong style="color: #000;">Hữu Thọ - Quốc
+                Dửng</strong>
+            </p>
+            <small style="color: #aaa;">"Be Bold. Be Bright. Be MOON."</small>
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
 
-    <!-- Copyright -->
-    <div class="row pt-3 mt-3 text-center border-top" style="border-color: #333;">
-      <div class="col-md-12">
-        <p style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #666; margin-bottom: 0;">
-          Made with <span style="color: #ff4f81;">♥️</span> by <strong style="color: #000;">Hữu Thọ - Quốc Dửng</strong>
-        </p>
-        <small style="color: #aaa;">"Be Bold. Be Bright. Be MOON."</small>
-      </div>
-    </div>
+
+
   </div>
-</footer>
 
-
-
-</div>
-
-<script src="~/js/jquery-3.3.1.min.js"></script>
-<script src="~/js/jquery-ui.js"></script>
-<script src="~/js/popper.min.js"></script>
-<script src="~/js/bootstrap.min.js"></script>
-<script src="~/js/owl.carousel.min.js"></script>
-<script src="~/js/jquery.magnific-popup.min.js"></script>
-<script src="~/js/aos.js"></script>
-<script src="~/js/main.js"></script>
+  <script src="~/js/jquery-3.3.1.min.js"></script>
+  <script src="~/js/jquery-ui.js"></script>
+  <script src="~/js/popper.min.js"></script>
+  <script src="~/js/bootstrap.min.js"></script>
+  <script src="~/js/owl.carousel.min.js"></script>
+  <script src="~/js/jquery.magnific-popup.min.js"></script>
+  <script src="~/js/aos.js"></script>
+  <script src="~/js/main.js"></script>
 </body>
+
 </html>
+
+<script>
+  setTimeout(() => {
+    const toast = document.getElementById("success-toast");
+    if (toast) {
+      toast.style.transition = "opacity 0.5s ease";
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 500);
+    }
+  }, 1000); 
+</script>

@@ -7,7 +7,7 @@ namespace moon.Models
     public class CartItem
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); 
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string ProductId { get; set; }
 
@@ -23,5 +23,8 @@ namespace moon.Models
 
         [NotMapped]
         public decimal Total => Price * Quantity; 
+        [NotMapped]
+        public int StockQuantity { get; set; }
+
     }
 }

@@ -1,142 +1,220 @@
+@model List<moon.Models.CartItem>
 @{
     Layout = "~/Views/Shared/Layout.cshtml";
-    ViewData["Title"] = "Thanh toán";
+    ViewData["Title"] = "Giỏ hàng";
+}
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-0">
+        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+        <span class="mx-2 mb-0">/</span>
+        <strong class="text-black">Giỏ hàng</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row mb-5">
+      <form class="col-md-12" method="post">
+        <div class="site-blocks-table">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="product-thumbnail">Hình ảnh</th>
+                <th class="product-name">Tên sản phẩm</th>
+                <th class="product-price">Giá</th>
+                <th class="product-quantity">Số lượng</th>
+                <th class="product-total">Tổng tiền</th>
+                <th class="product-remove">Loại bỏ</th>
+              </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+              <tr>
+                <td class="product-thumbnail">
+                  <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid" style="max-width: 100px;" />
+                </td>
+                <td class="product-name">
+                  <h2 class="h5 text-black">@item.ProductName</h2>
+                </td>
+                <td>@item.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                <td>
+                  <div class="input-group mb-3" style="max-width: 120px;">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-primary btn-decrease" type="button">&minus;</button>
+                    </div>
+                    <input type="text" class="form-control text-center quantity-input"
+                           value="@item.Quantity"
+                           data-stock="@item.StockQuantity"
+                           data-id="@item.Id" />
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-primary btn-increase" type="button">&plus;</button>
+                    </div>
+                  </div>
+                  <small class="text-danger d-block text-center">Còn @item.StockQuantity sản phẩm</small>
+                </td>
+                <td>@item.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                <td>
+                  <a href="/Cart/Remove?id=@item.Id" class="btn btn-primary height-auto btn-sm btn-remove" data-id="@item.Id">X</a>
+                </td>
+              </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <a href="@Url.Action("Shop", "Home")" class="btn btn-outline-primary btn-sm">Tiếp tục mua hàng</a>
+      </div>
+      <div class="col-md-6">
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-12 text-right border-bottom mb-3">
+                <h3 class="text-black h4 text-uppercase">Tổng đơn hàng</h3>
+              </div>
+            </div>
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <span class="text-black">Tổng cộng</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black">
+                  @Model.Sum(item => item.Total).ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+                </strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-primary btn-lg btn-block"
+                        onclick='window.location="@Url.Action("Checkout", "Home")"'>Thanh toán</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".quantity-input").forEach(input => {
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                processQuantityChange(this);
+            }
+        });
+
+        input.addEventListener("blur", function () {
+            processQuantityChange(this);
+        });
+    });
+
+    document.querySelectorAll(".btn-decrease").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const input = this.closest(".input-group").querySelector(".quantity-input");
+            let value = parseInt(input.value) || 1;
+            input.value = value - 1;
+            processQuantityChange(input);
+        });
+    });
+
+    document.querySelectorAll(".btn-increase").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const input = this.closest(".input-group").querySelector(".quantity-input");
+            let value = parseInt(input.value) || 0;
+            input.value = value + 1;
+            processQuantityChange(input);
+        });
+    });
+
+    document.querySelectorAll(".btn-remove").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Xóa",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Cart/Remove?id=${id}`;
+                }
+            });
+        });
+    });
+
+    function processQuantityChange(input) {
+        const stock = parseInt(input.dataset.stock);
+        const id = input.dataset.id;
+        let value = parseInt(input.value.replace(/\D/g, "")) || 0;
+
+        if (value === 0) {
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Xóa",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Cart/Remove?id=${id}`;
+                } else {
+                    input.value = 1;
+                }
+            });
+            return;
+        }
+
+        if (value > stock) {
+            Swal.fire({
+                icon: "warning",
+                title: "Vượt quá số lượng tồn kho",
+                text: `Sản phẩm hiện chỉ có ${stock} sản phẩm.`,
+                confirmButtonColor: "#007bff",
+                confirmButtonText: "Đã hiểu"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    input.value = stock;
+                    updateQuantity(id, stock);
+                }
+            });
+            return;
+        }
+
+        updateQuantity(id, value);
     }
 
-    <div class="bg-light py-3">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 mb-0"><a asp-controller="Home" asp-action="Index">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Giỏ hàng</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="site-section">
-      <div class="container">
-        <div class="row mb-5">
-          <form class="col-md-12" method="post">
-            <div class="site-blocks-table">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th class="product-thumbnail">Hình ảnh</th>
-                    <th class="product-name">Tên sản phẩm</th>
-                    <th class="product-price">Giá</th>
-                    <th class="product-quantity">Số lượng</th>
-                    <th class="product-total">Tổng tiền</th>
-                    <th class="product-remove">Loại bỏ</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="product-thumbnail">
-                      <img src="images/cloth_1.jpg" alt="Image" class="img-fluid">
-                    </td>
-                    <td class="product-name">
-                      <h2 class="h5 text-black">Top Up T-Shirt</h2>
-                    </td>
-                    <td>$49.00</td>
-                    <td>
-                      <div class="input-group mb-3" style="max-width: 120px;">
-                        <div class="input-group-prepend">
-                          <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
-                        </div>
-                        <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
-                        </div>
-                      </div>
-
-                    </td>
-                    <td>$49.00</td>
-                    <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
-                  </tr>
-
-                  <tr>
-                    <td class="product-thumbnail">
-                      <img src="images/cloth_2.jpg" alt="Image" class="img-fluid">
-                    </td>
-                    <td class="product-name">
-                      <h2 class="h5 text-black">Polo Shirt</h2>
-                    </td>
-                    <td>$49.00</td>
-                    <td>
-                      <div class="input-group mb-3" style="max-width: 120px;">
-                        <div class="input-group-prepend">
-                          <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
-                        </div>
-                        <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
-                        </div>
-                      </div>
-
-                    </td>
-                    <td>$49.00</td>
-                    <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </form>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <div class="row mb-5">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-primary btn-sm btn-block">Cập nhật giỏ hàng</button>
-              </div>
-              <div class="col-md-6">
-                <button class="btn btn-outline-primary btn-sm btn-block">Tiếp tục mua hàng</button>
-              </div>
-            </div>
-            <!-- <div class="row">
-              <div class="col-md-12">
-                <label class="text-black h4" for="coupon">Đơn hàng</label>
-                <p>Enter your coupon code if you have one.</p>
-              </div>
-              <div class="col-md-8 mb-3 mb-md-0">
-                <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-primary btn-sm px-4">Apply Coupon</button>
-              </div>
-            </div> -->
-          </div>
-          <div class="col-md-6 pl-5">
-            <div class="row justify-content-end">
-              <div class="col-md-7">
-                <div class="row">
-                  <div class="col-md-12 text-right border-bottom mb-5">
-                    <h3 class="text-black h4 text-uppercase">Tổng đơn hàng</h3>
-                  </div>
-                </div>
-                <!-- <div class="row mb-3">
-                  <div class="col-md-6">
-                    <span class="text-black">Subtotal</span>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
-                  </div>
-                </div> -->
-                <div class="row mb-5">
-                  <div class="col-md-6">
-                    <span class="text-black">Tổng cộng</span>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-12">
-                    <button class="btn btn-primary btn-lg btn-block" onclick='window.location="@Url.Action("Checkout", "Home")"'>Thanh toán</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    function updateQuantity(id, quantity) {
+        fetch(`/Cart/UpdateQuantity?id=${id}&quantity=${quantity}`)
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+    }
+});
+</script>
+}

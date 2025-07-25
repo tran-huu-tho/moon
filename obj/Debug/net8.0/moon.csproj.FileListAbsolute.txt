@@ -6,7 +6,6 @@ Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.csproj.CoreCompileInputs.cache
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.MvcApplicationPartsAssemblyInfo.cache
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.RazorAssemblyInfo.cache
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.RazorAssemblyInfo.cs
-Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.sourcelink.json
 Z:\Đồ án 3\moon\bin\Debug\net8.0\appsettings.Development.json
 Z:\Đồ án 3\moon\bin\Debug\net8.0\appsettings.json
 Z:\Đồ án 3\moon\bin\Debug\net8.0\moon.staticwebassets.runtime.json
@@ -165,3 +164,4 @@ Z:\Đồ án 3\moon\obj\Debug\net8.0\refint\moon.dll
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.pdb
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.genruntimeconfig.cache
 Z:\Đồ án 3\moon\obj\Debug\net8.0\ref\moon.dll
+Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.sourcelink.json
