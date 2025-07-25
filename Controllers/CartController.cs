@@ -179,6 +179,18 @@ namespace moon.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public int GetCartItemCount()
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (string.IsNullOrEmpty(email)) return 0;
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null) return 0;
+
+            // Đếm số sản phẩm khác nhau trong giỏ hàng
+            return _context.CartItems.Count(c => c.UserId == user.Id);
+        }
 
 
 

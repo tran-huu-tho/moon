@@ -2,6 +2,19 @@
 @{
   Layout = null;
   var userName = Context.Session.GetString("UserName");
+   var email = Context.Session.GetString("Email");
+    int cartCount = 0;
+
+    if (!string.IsNullOrEmpty(email))
+    {
+        var db = Context.RequestServices.GetService(typeof(moon.Models.ApplicationDbContext)) as moon.Models.ApplicationDbContext;
+        var user = db.Users.FirstOrDefault(u => u.Email == email);
+        if (user != null)
+        {
+            cartCount = db.CartItems.Where(c => c.UserId == user.Id).Count();
+
+        }
+    }
 }
 @RenderSection("Scripts", required: false)
 
@@ -77,7 +90,7 @@
             <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
             <a asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
               <span class="icon-shopping-bag"></span>
-              <span class="number">CC</span>
+              <span class="number">@cartCount</span>
             </a>
 
 
