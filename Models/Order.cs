@@ -36,6 +36,8 @@ namespace moon.Models
         public decimal ShippingFee { get; set; } = 30000;
 
         public decimal TotalAmount { get; set; }         // Tổng cộng (gồm cả phí ship)
+        
+        public string Status { get; set; } = "Chờ xử lý";
 
         // Navigation property
         public List<OrderItem> Items { get; set; }

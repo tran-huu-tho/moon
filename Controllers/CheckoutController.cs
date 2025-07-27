@@ -99,7 +99,8 @@ namespace moon.Controllers
                 TotalAmount = total,
                 ShippingFee = shippingFee,
                 OrderDate = DateTime.Now,
-                Items = orderItems
+                Items = orderItems,
+                Status = "Chờ xác nhận"
             };
 
             _context.Orders.Add(order);
