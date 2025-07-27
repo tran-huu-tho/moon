@@ -165,3 +165,4 @@ Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.pdb
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.genruntimeconfig.cache
 Z:\Đồ án 3\moon\obj\Debug\net8.0\ref\moon.dll
 Z:\Đồ án 3\moon\obj\Debug\net8.0\moon.sourcelink.json
+Z:\Đồ án 3\moon\bin\Debug\net8.0\Newtonsoft.Json.dll

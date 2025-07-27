@@ -36,9 +36,15 @@ namespace moon.Controllers
         }
         public IActionResult Invoice() => View("~/Views/Home/Manager/Invoice.cshtml");
         public IActionResult Statistical() => View("~/Views/Home/Manager/Statistical.cshtml");
-        public IActionResult StatusOrder() => View("~/Views/Home/Manager/StatusOrder.cshtml");
+        public IActionResult StatusOrder()
+        {
+            var orders = _context.Orders.ToList();  // hoặc lấy bằng Include nếu cần thêm dữ liệu liên quan
+            return View("~/Views/Home/Manager/StatusOrder.cshtml", orders);
+        }
+
         public IActionResult AddCategory() => View("~/Views/Home/Manager/AddCategory.cshtml");
         public IActionResult Profile() => View("~/Views/Home/Manager/Profile.cshtml");
+
 
         public IActionResult Product()
         {
