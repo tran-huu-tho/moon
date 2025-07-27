@@ -57,15 +57,27 @@ namespace moon.Controllers
      string Note,
      string PaymentMethod)
         {
+            if (string.IsNullOrWhiteSpace(FullName) ||
+                string.IsNullOrWhiteSpace(PhoneNumber) ||
+                string.IsNullOrWhiteSpace(Province) || Province == "-- Chọn Tỉnh/Thành phố --" ||
+                string.IsNullOrWhiteSpace(District) || District == "-- Chọn Quận/Huyện --" ||
+                string.IsNullOrWhiteSpace(Ward) || Ward == "-- Chọn Phường/Xã --")
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập đầy đủ thông tin giao hàng.";
+                return RedirectToAction("Index");
+            }
+
             var email = HttpContext.Session.GetString("Email");
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (user == null) return RedirectToAction("Login", "Login");
+            if (user == null)
+                return RedirectToAction("Login", "Login");
 
             var cartItems = _context.CartItems
                 .Where(c => c.UserId == user.Id)
                 .ToList();
 
-            if (!cartItems.Any()) return RedirectToAction("Index");
+            if (!cartItems.Any())
+                return RedirectToAction("Index");
 
             decimal subtotal = cartItems.Sum(item => item.Total);
             decimal shippingFee = 30000;
@@ -85,6 +97,21 @@ namespace moon.Controllers
                 OrderId = newOrderId
             }).ToList();
 
+            //  Trừ tồn kho sản phẩm
+            foreach (var cartItem in cartItems)
+            {
+                var product = _context.Products.FirstOrDefault(p => p.Id == cartItem.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity -= cartItem.Quantity;
+
+                    // Nếu bạn muốn đảm bảo tồn kho không âm:
+                    if (product.StockQuantity < 0)
+                    {
+                        product.StockQuantity = 0;
+                    }
+                }
+            }
             var order = new Order
             {
                 Id = newOrderId,
@@ -109,6 +136,7 @@ namespace moon.Controllers
 
             return RedirectToAction("ThankYou");
         }
+
 
         // ======= Tạo mã OrderId: HD001, HD002,... =======
         private string GenerateNextOrderId()

@@ -1,7 +1,7 @@
 @model List<moon.Models.CartItem>
 @{
-    Layout = "~/Views/Shared/Layout.cshtml";
-    ViewData["Title"] = "Giỏ hàng";
+  Layout = "~/Views/Shared/Layout.cshtml";
+  ViewData["Title"] = "Giỏ hàng";
 }
 <div class="bg-light py-3">
   <div class="container">
@@ -32,38 +32,47 @@
               </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model)
-            {
-              <tr>
-                <td class="product-thumbnail">
-                  <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid" style="max-width: 100px;" />
-                </td>
-                <td class="product-name">
-                  <h2 class="h5 text-black">@item.ProductName</h2>
-                </td>
-                <td>@item.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-                <td>
-                  <div class="input-group mb-3" style="max-width: 120px;">
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-primary btn-decrease" type="button">&minus;</button>
-                    </div>
-                    <input type="text" class="form-control text-center quantity-input"
-                           value="@item.Quantity"
-                           data-stock="@item.StockQuantity"
-                           data-id="@item.Id" />
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-primary btn-increase" type="button">&plus;</button>
-                    </div>
-                  </div>
-                  <small class="text-danger d-block text-center">Còn @item.StockQuantity sản phẩm</small>
-                </td>
-                <td>@item.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-                <td>
-                  <a href="/Cart/Remove?id=@item.Id" class="btn btn-primary height-auto btn-sm btn-remove" data-id="@item.Id">X</a>
-                </td>
-              </tr>
-            }
+              @if (Model == null || !Model.Any())
+              {
+                <tr>
+                  <td colspan="6" class="text-center text-muted">Chưa có sản phẩm nào trong giỏ hàng</td>
+                </tr>
+              }
+              else
+              {
+                foreach (var item in Model)
+                {
+                  <tr>
+                    <td class="product-thumbnail">
+                      <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid" style="max-width: 100px;" />
+                    </td>
+                    <td class="product-name">
+                      <h2 class="h5 text-black">@item.ProductName</h2>
+                    </td>
+                    <td>@item.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                    <td>
+                      <div class="input-group mb-3" style="max-width: 120px;">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-primary btn-decrease" type="button">&minus;</button>
+                        </div>
+                        <input type="text" class="form-control text-center quantity-input" value="@item.Quantity"
+                          data-stock="@item.StockQuantity" data-id="@item.Id" />
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-primary btn-increase" type="button">&plus;</button>
+                        </div>
+                      </div>
+                      <small class="text-danger d-block text-center">Còn @item.StockQuantity sản phẩm</small>
+                    </td>
+                    <td>@item.Total.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                    <td>
+                      <a href="/Cart/Remove?id=@item.Id" class="btn btn-primary height-auto btn-sm btn-remove"
+                        data-id="@item.Id">X</a>
+                    </td>
+                  </tr>
+                }
+              }
             </tbody>
+
           </table>
         </div>
       </form>
@@ -91,8 +100,8 @@
                 </strong>
               </div>
             </div>
-            <button class="btn btn-primary btn-lg btn-block"
-        onclick='window.location="@Url.Action("Index", "Checkout")"'>Thanh toán</button>
+            <button id="btnCheckout" class="btn btn-primary btn-lg btn-block">Thanh toán</button>
+
           </div>
         </div>
       </div>
@@ -101,116 +110,138 @@
 </div>
 
 @section Scripts {
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".quantity-input").forEach(input => {
-        input.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                processQuantityChange(this);
-            }
-        });
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          processQuantityChange(this);
+        }
+      });
 
-        input.addEventListener("blur", function () {
-            processQuantityChange(this);
-        });
+      input.addEventListener("blur", function () {
+        processQuantityChange(this);
+      });
     });
 
     document.querySelectorAll(".btn-decrease").forEach(btn => {
-        btn.addEventListener("click", function () {
-            const input = this.closest(".input-group").querySelector(".quantity-input");
-            let value = parseInt(input.value) || 1;
-            input.value = value - 1;
-            processQuantityChange(input);
-        });
+      btn.addEventListener("click", function () {
+        const input = this.closest(".input-group").querySelector(".quantity-input");
+        let value = parseInt(input.value) || 1;
+        input.value = value - 1;
+        processQuantityChange(input);
+      });
     });
 
     document.querySelectorAll(".btn-increase").forEach(btn => {
-        btn.addEventListener("click", function () {
-            const input = this.closest(".input-group").querySelector(".quantity-input");
-            let value = parseInt(input.value) || 0;
-            input.value = value + 1;
-            processQuantityChange(input);
-        });
+      btn.addEventListener("click", function () {
+        const input = this.closest(".input-group").querySelector(".quantity-input");
+        let value = parseInt(input.value) || 0;
+        input.value = value + 1;
+        processQuantityChange(input);
+      });
     });
 
     document.querySelectorAll(".btn-remove").forEach(btn => {
-        btn.addEventListener("click", function (e) {
-            e.preventDefault();
-            const id = this.dataset.id;
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        const id = this.dataset.id;
 
-            Swal.fire({
-                title: "Xác nhận",
-                text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Xóa",
-                cancelButtonText: "Hủy"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/Cart/Remove?id=${id}`;
-                }
-            });
+        Swal.fire({
+          title: "Xác nhận",
+          text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Xóa",
+          cancelButtonText: "Hủy"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/Cart/Remove?id=${id}`;
+          }
         });
+      });
     });
 
+    // ✅ Kiểm tra giỏ hàng trống khi bấm nút thanh toán
+    const btnCheckout = document.getElementById("btnCheckout");
+    if (btnCheckout) {
+      btnCheckout.addEventListener("click", function () {
+        const hasItems = @Model.Any().ToString().ToLower(); // true hoặc false
+
+        if (!hasItems) {
+          Swal.fire({
+            icon: "info",
+            title: "Giỏ hàng trống",
+            text: "Bạn chưa có sản phẩm nào trong giỏ hàng!",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#3085d6"
+          });
+          return;
+        }
+
+        window.location = "@Url.Action("Index", "Checkout")";
+      });
+    }
+
     function processQuantityChange(input) {
-        const stock = parseInt(input.dataset.stock);
-        const id = input.dataset.id;
-        let value = parseInt(input.value.replace(/\D/g, "")) || 0;
+      const stock = parseInt(input.dataset.stock);
+      const id = input.dataset.id;
+      let value = parseInt(input.value.replace(/\D/g, "")) || 0;
 
-        if (value === 0) {
-            Swal.fire({
-                title: "Xác nhận",
-                text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Xóa",
-                cancelButtonText: "Hủy"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/Cart/Remove?id=${id}`;
-                } else {
-                    input.value = 1;
-                }
-            });
-            return;
-        }
+      if (value === 0) {
+        Swal.fire({
+          title: "Xác nhận",
+          text: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Xóa",
+          cancelButtonText: "Hủy"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/Cart/Remove?id=${id}`;
+          } else {
+            input.value = 1;
+          }
+        });
+        return;
+      }
 
-        if (value > stock) {
-            Swal.fire({
-                icon: "warning",
-                title: "Vượt quá số lượng tồn kho",
-                text: `Sản phẩm hiện chỉ có ${stock} sản phẩm.`,
-                confirmButtonColor: "#007bff",
-                confirmButtonText: "Đã hiểu"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    input.value = stock;
-                    updateQuantity(id, stock);
-                }
-            });
-            return;
-        }
+      if (value > stock) {
+        Swal.fire({
+          icon: "warning",
+          title: "Vượt quá số lượng tồn kho",
+          text: `Sản phẩm hiện chỉ có ${stock} sản phẩm.`,
+          confirmButtonColor: "#007bff",
+          confirmButtonText: "Đã hiểu"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            input.value = stock;
+            updateQuantity(id, stock);
+          }
+        });
+        return;
+      }
 
-        updateQuantity(id, value);
+      updateQuantity(id, value);
     }
 
     function updateQuantity(id, quantity) {
-        fetch(`/Cart/UpdateQuantity?id=${id}&quantity=${quantity}`)
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
-                }
-            });
+      fetch(`/Cart/UpdateQuantity?id=${id}&quantity=${quantity}`)
+        .then(response => {
+          if (response.ok) {
+            location.reload();
+          }
+        });
     }
-});
+  });
 </script>
+
 }
