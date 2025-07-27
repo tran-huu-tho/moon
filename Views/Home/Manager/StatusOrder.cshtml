@@ -38,9 +38,14 @@
                                 <td>@order.Id</td>
                                 <td>@order.FullName</td>
                                 <td>@order.PhoneNumber</td>
-                                <td>@order.Province, @order.District, @order.Ward</td>
+                                <td class="address"
+                                    data-province="@order.Province"
+                                    data-district="@order.District"
+                                    data-ward="@order.Ward">
+                                    Đang tải...
+                                </td>
                                 <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@order.TotalAmount</td>
+                                <td>@order.TotalAmount VNĐ</td>
                                 <td>
                                     <select class="form-control">
                                         <option selected>@order.Status</option>
@@ -58,3 +63,37 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
+        const provinces = await res.json();
+
+        document.querySelectorAll(".address").forEach(cell => {
+            const pCode = parseInt(cell.dataset.province);
+            const dCode = parseInt(cell.dataset.district);
+            const wCode = parseInt(cell.dataset.ward);
+
+            let provinceName = "", districtName = "", wardName = "";
+
+            const province = provinces.find(p => p.code === pCode);
+            if (province) {
+                provinceName = province.name;
+                const district = province.districts.find(d => d.code === dCode);
+                if (district) {
+                    districtName = district.name;
+                    const ward = district.wards.find(w => w.code === wCode);
+                    if (ward) {
+                        wardName = ward.name;
+                    }
+                }
+            }
+
+            // 🟢 Đổi thứ tự: xã/phường, huyện/quận, tỉnh/thành
+            cell.textContent = `${wardName}, ${districtName}, ${provinceName}`;
+        });
+    });
+</script>
+}
+
