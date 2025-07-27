@@ -15,6 +15,10 @@ namespace moon.Controllers
             _context = context;
         }
         public IActionResult Index() => View("~/Views/Home/Customer/Index.cshtml");
+
+
+        public IActionResult Receipt() => View("~/Views/Home/Customer/Receipt.cshtml");
+
         public IActionResult Contact() => View("~/Views/Home/Customer/Contact.cshtml");
         public IActionResult Shop()
         {
