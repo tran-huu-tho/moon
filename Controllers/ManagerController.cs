@@ -42,6 +42,24 @@ namespace moon.Controllers
             return View("~/Views/Home/Manager/StatusOrder.cshtml", orders);
         }
 
+        
+        [HttpPost]
+        public IActionResult UpdateStatusOrders(List<string> orderIds, List<string> statuses)
+        {
+            for (int i = 0; i < orderIds.Count; i++)
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.Id == orderIds[i]);
+                if (order != null)
+                {
+                    order.Status = statuses[i];
+                }
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("StatusOrder");
+        }
+
         public IActionResult AddCategory() => View("~/Views/Home/Manager/AddCategory.cshtml");
         public IActionResult Profile() => View("~/Views/Home/Manager/Profile.cshtml");
 

@@ -7,9 +7,9 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 text-gray-800">Danh sách đơn hàng</h1>
-        <a href="/Product/Add" class="btn btn-primary">
+        <button type="submit" form="orderForm" class="btn btn-primary">
             <i class="fas fa-save"></i> Lưu
-        </a>
+        </button>
     </div>
 
     <div class="card shadow mb-4">
@@ -18,82 +18,150 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>ID đơn hàng</th>
-                            <th>Khách hàng</th>
-                            <th>Số điện thoại</th>
-                            <th>Địa chỉ giao hàng</th>
-                            <th>Ngày đặt hàng</th>
-                            <th>Tổng tiền</th>
-                            <th>Trạng thái đơn hàng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var order in Model)
-                        {
+            <form id="orderForm" method="post" asp-controller="Manager" asp-action="UpdateStatusOrders">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
                             <tr>
-                                <td>@order.Id</td>
-                                <td>@order.FullName</td>
-                                <td>@order.PhoneNumber</td>
-                                <td class="address"
-                                    data-province="@order.Province"
-                                    data-district="@order.District"
-                                    data-ward="@order.Ward">
-                                    Đang tải...
-                                </td>
-                                <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@order.TotalAmount VNĐ</td>
-                                <td>
-                                    <select class="form-control">
-                                        <option selected>@order.Status</option>
-                                        <option>Đang xử lý</option>
-                                        <option>Đang giao hàng</option>
-                                        <option>Thành công</option>
-                                        <option>Đã huỷ</option>
-                                    </select>
-                                </td>
+                                <th>ID đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ giao hàng</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái đơn hàng</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model[i].Id
+                                        <input type="hidden" name="orderIds" value="@Model[i].Id" />
+                                    </td>
+                                    <td>@Model[i].FullName</td>
+                                    <td>@Model[i].PhoneNumber</td>
+                                    <td class="address"
+                                        data-province="@Model[i].Province"
+                                        data-district="@Model[i].District"
+                                        data-ward="@Model[i].Ward">
+                                        Đang tải...
+                                    </td>
+                                    <td>@Model[i].OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@Model[i].TotalAmount VNĐ</td>
+                                    <td>
+                                        <div class="custom-select-wrapper">
+                                            <div class="custom-select" data-index="@i">@Model[i].Status</div>
+                                            <div class="custom-options">
+                                                <div class="option-item">Đang xử lý</div>
+                                                <div class="option-item">Đang giao</div>
+                                                <div class="option-item">Thành công</div>
+                                                <div class="option-item">Đã huỷ</div>
+                                            </div>
+                                            <input type="hidden" name="statuses[@i]" value="@Model[i].Status" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+<style>
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+.custom-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 4px;
+}
+.custom-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+.option-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.option-item:hover {
+    background-color: #f0f0f0;
+}
+</style>
+
 @section Scripts {
 <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
-        const provinces = await res.json();
+document.addEventListener("DOMContentLoaded", async () => {
+    // Địa chỉ
+    const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
+    const provinces = await res.json();
 
-        document.querySelectorAll(".address").forEach(cell => {
-            const pCode = parseInt(cell.dataset.province);
-            const dCode = parseInt(cell.dataset.district);
-            const wCode = parseInt(cell.dataset.ward);
+    document.querySelectorAll(".address").forEach(cell => {
+        const pCode = parseInt(cell.dataset.province);
+        const dCode = parseInt(cell.dataset.district);
+        const wCode = parseInt(cell.dataset.ward);
 
-            let provinceName = "", districtName = "", wardName = "";
+        let provinceName = "", districtName = "", wardName = "";
 
-            const province = provinces.find(p => p.code === pCode);
-            if (province) {
-                provinceName = province.name;
-                const district = province.districts.find(d => d.code === dCode);
-                if (district) {
-                    districtName = district.name;
-                    const ward = district.wards.find(w => w.code === wCode);
-                    if (ward) {
-                        wardName = ward.name;
-                    }
+        const province = provinces.find(p => p.code === pCode);
+        if (province) {
+            provinceName = province.name;
+            const district = province.districts.find(d => d.code === dCode);
+            if (district) {
+                districtName = district.name;
+                const ward = district.wards.find(w => w.code === wCode);
+                if (ward) {
+                    wardName = ward.name;
                 }
             }
+        }
 
-            // 🟢 Đổi thứ tự: xã/phường, huyện/quận, tỉnh/thành
-            cell.textContent = `${wardName}, ${districtName}, ${provinceName}`;
+        cell.textContent = `${wardName}, ${districtName}, ${provinceName}`;
+    });
+
+    // Dropdown
+    document.querySelectorAll(".custom-select").forEach(select => {
+        select.addEventListener("click", () => {
+            const options = select.nextElementSibling;
+            options.style.display = options.style.display === "block" ? "none" : "block";
         });
     });
+
+    document.querySelectorAll(".option-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const wrapper = item.closest(".custom-select-wrapper");
+            const display = wrapper.querySelector(".custom-select");
+            const hiddenInput = wrapper.querySelector("input[type='hidden']");
+            display.textContent = item.textContent;
+            hiddenInput.value = item.textContent;
+            wrapper.querySelector(".custom-options").style.display = "none";
+        });
+    });
+
+    document.addEventListener("click", (e) => {
+        document.querySelectorAll(".custom-options").forEach(opt => {
+            if (!opt.parentElement.contains(e.target)) {
+                opt.style.display = "none";
+            }
+        });
+    });
+});
 </script>
 }
-
