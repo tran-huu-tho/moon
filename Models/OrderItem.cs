@@ -1,11 +1,27 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System;
+
 namespace moon.Models
 {
     public class OrderItem
     {
-        public string ID { get; set; } 
-        public string ProductId { get; set; }       // ID sản phẩm
-        public string ProductName { get; set; }     // Tên sản phẩm tại thời điểm đặt hàng
-        public decimal Price { get; set; }          // Giá sản phẩm tại thời điểm đặt
-        public int Quantity { get; set; }           // Số lượng mua
+        [Key]
+        public string Id { get; set; }
+
+        public string OrderId { get; set; }
+
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+
+        public int Quantity { get; set; }
+
+        public decimal UnitPrice { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public decimal Total { get; set; }
+
+        [ForeignKey("OrderId")]
+        public Order Order { get; set; }
     }
+
 }

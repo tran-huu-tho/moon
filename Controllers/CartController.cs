@@ -192,9 +192,5 @@ namespace moon.Controllers
             return _context.CartItems.Count(c => c.UserId == user.Id);
         }
 
-
-
-
-
     }
 }
