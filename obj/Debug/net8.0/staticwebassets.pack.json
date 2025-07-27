@@ -8309,6 +8309,10 @@
       "PackagePath": "staticwebassets\\vendor\\jquery\\jquery.slim.min.map"
     },
     {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\video\\demo.mp4",
+      "PackagePath": "staticwebassets\\video\\demo.mp4"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.moon.props",
       "PackagePath": "build\\moon.props"
     },

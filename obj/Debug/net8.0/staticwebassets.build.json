@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2xx+xTGWPSjlVcZmicQeyDc0bHqK6PNBZF6pxyJiuhs=",
+  "Hash": "D0SgTTMj/Y4g+qMSo8UIWqVUEe7XdWWXeVjeaDpsZTQ=",
   "Source": "moon",
   "BasePath": "_content/moon",
   "Mode": "Default",
@@ -39478,6 +39478,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\vendor\\jquery\\jquery.slim.min.map"
+    },
+    {
+      "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\video\\demo.mp4",
+      "SourceId": "moon",
+      "SourceType": "Discovered",
+      "ContentRoot": "Z:\\Đồ án 3\\moon\\wwwroot\\",
+      "BasePath": "_content/moon",
+      "RelativePath": "video/demo.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\video\\demo.mp4"
     }
   ]
 }
