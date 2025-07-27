@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "D0SgTTMj/Y4g+qMSo8UIWqVUEe7XdWWXeVjeaDpsZTQ=",
+  "Hash": "t5GjlX/LC1gArKKMRdcEImXz0Wyn8ku9WYQ4Pg/TYls=",
   "Source": "moon",
   "BasePath": "_content/moon",
   "Mode": "Default",
@@ -4917,6 +4917,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\unn.jpg"
+    },
+    {
+      "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\unnamed.png",
+      "SourceId": "moon",
+      "SourceType": "Discovered",
+      "ContentRoot": "Z:\\Đồ án 3\\moon\\wwwroot\\",
+      "BasePath": "_content/moon",
+      "RelativePath": "uploads/unnamed.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\unnamed.png"
     },
     {
       "Identity": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\zr.webp",
