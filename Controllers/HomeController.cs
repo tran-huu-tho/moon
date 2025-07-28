@@ -17,7 +17,15 @@ namespace moon.Controllers
         public IActionResult Index() => View("~/Views/Home/Customer/Index.cshtml");
 
 
-        public IActionResult Receipt() => View("~/Views/Home/Customer/Receipt.cshtml");
+        public IActionResult Receipt()
+        {
+            var orders = _context.Orders
+                .Include(o => o.Items)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+
+            return View("~/Views/Home/Customer/Receipt.cshtml", orders);
+        }
 
         public IActionResult Contact() => View("~/Views/Home/Customer/Contact.cshtml");
         public IActionResult Shop()

@@ -1,3 +1,5 @@
+@model List<moon.Models.Order>
+
 @{
     Layout = "~/Views/Shared/Layout.cshtml";
     ViewData["Title"] = "Đơn hàng";
@@ -18,76 +20,35 @@
             </tr>
         </thead>
         <tbody>
+        @foreach (var order in Model)
+        {
             <tr>
-                <td>#DH001</td>
-                <td>2025-07-25</td>
-                <td><span class="badge badge-warning">Đang xử lý</span></td>
-                <td>Áo thun x3,<br> Quần jeans x1</td>
-                <td>1.200.000₫</td>
+                <td> @order.Id</td>
+                <td> @order.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @{
+                        string status = order.Status?.Trim().ToLower();
+                        string badgeClass = status switch
+                        {
+                            "chờ xác nhận" => "badge-secondary",
+                            "đang xử lý" => "badge-warning",
+                            "đang giao" => "badge-info",       // sửa lại thành xanh biển
+                            "thành công" => "badge-success",
+                            "đã hủy" => "badge-primary",       // đảm bảo dùng màu đỏ
+                            _ => "badge-primary"
+                        };
+                    }
+                    <span class="badge @badgeClass text-uppercase">@order.Status</span>
+                </td>
+                <td>
+                    @foreach (var item in order.Items)
+                    {
+                        <text>@item.ProductName x @item.Quantity<br /></text>
+                    }
+                </td>
+                <td>@order.TotalAmount.ToString("#,##0") VNĐ</td>
             </tr>
-            <tr>
-                <td>#DH002</td>
-                <td>2025-07-24</td>
-                <td><span class="badge badge-success">Hoàn thành</span></td>
-                <td>Váy hoa x1,<br> Túi xách x1</td>
-                <td>870.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH003</td>
-                <td>2025-07-23</td>
-                <td><span class="badge badge-danger">Đã hủy</span></td>
-                <td>Dép tổ ong x2</td>
-                <td>560.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH004</td>
-                <td>2025-07-22</td>
-                <td><span class="badge badge-primary">Đang giao</span></td>
-                <td>Giày sneaker x1</td>
-                <td>1.500.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH005</td>
-                <td>2025-07-21</td>
-                <td><span class="badge badge-success">Hoàn thành</span></td>
-                <td>Balo laptop x1,<br> Áo khoác x1</td>
-                <td>2.050.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH006</td>
-                <td>2025-07-20</td>
-                <td><span class="badge badge-warning">Đang xử lý</span></td>
-                <td>Áo sơ mi x2</td>
-                <td>760.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH007</td>
-                <td>2025-07-19</td>
-                <td><span class="badge badge-danger">Đã hủy</span></td>
-                <td>Khăn choàng x3</td>
-                <td>300.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH008</td>
-                <td>2025-07-18</td>
-                <td><span class="badge badge-primary">Đang giao</span></td>
-                <td>Áo hoodie x1</td>
-                <td>690.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH009</td>
-                <td>2025-07-17</td>
-                <td><span class="badge badge-success">Hoàn thành</span></td>
-                <td>Áo dài tay x1,<br> Mũ len x2</td>
-                <td>950.000₫</td>
-            </tr>
-            <tr>
-                <td>#DH010</td>
-                <td>2025-07-16</td>
-                <td><span class="badge badge-warning">Đang xử lý</span></td>
-                <td>Quần short x2</td>
-                <td>430.000₫</td>
-            </tr>
+        }
         </tbody>
     </table>
 </div>
