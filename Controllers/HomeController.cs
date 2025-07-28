@@ -17,20 +17,24 @@ namespace moon.Controllers
         public IActionResult Index() => View("~/Views/Home/Customer/Index.cshtml");
 
 
-        public IActionResult Receipt()
-        {
-            var orders = _context.Orders
-                .Include(o => o.Items)
-                .OrderByDescending(o => o.OrderDate)
-                .ToList();
-
-            return View("~/Views/Home/Customer/Receipt.cshtml", orders);
-        }
+        public IActionResult Receipt() => View("~/Views/Home/Customer/Receipt.cshtml");
 
         public IActionResult Contact() => View("~/Views/Home/Customer/Contact.cshtml");
-        public IActionResult Shop()
+        public IActionResult Shop(int page = 1)
         {
-            var products = _context.Products.ToList();
+            int pageSize = 12;
+            var products = _context.Products.AsQueryable();
+
+            var totalItems = products.Count();
+            var pagedProducts = products
+                .OrderBy(p => p.Id) // mặc định sắp xếp theo Id
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.SortOrder = ""; // không có sắp xếp khi mặc định
 
             var categoryCounts = _context.Categories
                 .Select(c => new
@@ -42,8 +46,9 @@ namespace moon.Controllers
 
             ViewBag.CategoryCounts = categoryCounts;
 
-            return View("~/Views/Home/Customer/Shop.cshtml", products);
+            return View("~/Views/Home/Customer/Shop.cshtml", pagedProducts);
         }
+
 
 
         public IActionResult About() => View("~/Views/Home/Customer/About.cshtml");
@@ -59,8 +64,9 @@ namespace moon.Controllers
         public IActionResult Instruct() => View("~/Views/Home/Customer/Instruct.cshtml");
         public IActionResult Profile() => View("~/Views/Home/Customer/Profile.cshtml");
 
-        public IActionResult Customer(string sortOrder)
+        public IActionResult Customer(string sortOrder, int page = 1)
         {
+            int pageSize = 12;
             var products = _context.Products.AsQueryable();
 
             switch (sortOrder)
@@ -71,10 +77,26 @@ namespace moon.Controllers
                 case "price_asc":
                     products = products.OrderBy(p => p.Price);
                     break;
+                case "price_range_0_100":
+                    products = products.Where(p => p.Price <= 100000);
+                    break;
+                case "price_range_100_200":
+                    products = products.Where(p => p.Price > 100000 && p.Price <= 200000);
+                    break;
+                case "price_range_200_9999999":
+                    products = products.Where(p => p.Price > 200000);
+                    break;
                 default:
                     products = products.OrderBy(p => p.Id);
                     break;
             }
+
+            var totalItems = products.Count();
+            var pagedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.SortOrder = sortOrder;
 
             var categoryCounts = _context.Categories
                 .Select(c => new
@@ -86,8 +108,9 @@ namespace moon.Controllers
 
             ViewBag.CategoryCounts = categoryCounts;
 
-            return View("Customer/Shop", products.ToList());
+            return View("Customer/Shop", pagedProducts);
         }
+
 
 
 
@@ -123,27 +146,27 @@ namespace moon.Controllers
         }
 
         public IActionResult FilterByCategory(string categoryName)
-{
-    var category = _context.Categories.FirstOrDefault(c => c.Name == categoryName);
-    if (category == null)
-        return RedirectToAction("Shop");
-
-    var filteredProducts = _context.Products
-        .Where(p => p.CategoryId == category.Id)
-        .ToList();
-
-    var categoryCounts = _context.Categories
-        .Select(c => new
         {
-            CategoryName = c.Name,
-            ProductCount = _context.Products.Count(p => p.CategoryId == c.Id)
-        })
-        .ToList();
+            var category = _context.Categories.FirstOrDefault(c => c.Name == categoryName);
+            if (category == null)
+                return RedirectToAction("Shop");
 
-    ViewBag.CategoryCounts = categoryCounts;
-    ViewBag.SelectedCategory = categoryName;
+            var filteredProducts = _context.Products
+                .Where(p => p.CategoryId == category.Id)
+                .ToList();
 
-    return View("Customer/Shop", filteredProducts);
-}
+            var categoryCounts = _context.Categories
+                .Select(c => new
+                {
+                    CategoryName = c.Name,
+                    ProductCount = _context.Products.Count(p => p.CategoryId == c.Id)
+                })
+                .ToList();
+
+            ViewBag.CategoryCounts = categoryCounts;
+            ViewBag.SelectedCategory = categoryName;
+
+            return View("Customer/Shop", filteredProducts);
+        }
     }
 }
