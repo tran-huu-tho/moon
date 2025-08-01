@@ -16,8 +16,23 @@ namespace moon.Controllers
         }
         public IActionResult Index() => View("~/Views/Home/Customer/Index.cshtml");
 
+       public IActionResult Receipt()
+        {
+            string userId = HttpContext.Session.GetString("UserId");
 
-        public IActionResult Receipt() => View("~/Views/Home/Customer/Receipt.cshtml");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Login"); // hoặc controller bạn dùng để đăng nhập
+            }
+
+            var orders = _context.Orders
+                .Include(o => o.Items)  // đảm bảo có dữ liệu từ Items
+                .Where(o => o.UserId == userId)
+                .ToList();
+
+            return View("~/Views/Home/Customer/Receipt.cshtml", orders);
+        }
+
 
         public IActionResult Contact() => View("~/Views/Home/Customer/Contact.cshtml");
         public IActionResult Shop(int page = 1)

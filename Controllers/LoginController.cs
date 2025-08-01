@@ -34,10 +34,14 @@ namespace moon.Controllers
                 HttpContext.Session.SetString("UserName", user.Name);
                 HttpContext.Session.SetString("Email", user.Email);
                 HttpContext.Session.SetString("Phone", user.Phone ?? "");
+
+                // ✅ Thêm dòng này để lưu UserId
+                 HttpContext.Session.SetString("UserId", user.Id);
  
                     string avatarString;
                 if (user.Avatar != null)
                 {
+
                     string base64Avatar = Convert.ToBase64String(user.Avatar);
                     avatarString = $"data:image/png;base64,{base64Avatar}";
                 }
