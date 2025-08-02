@@ -29,214 +29,102 @@
   }
   </script>
 
-        <div class="site-section">
-          <div class="container">
-            <div class="row">
-              <div class="title-section text-center mb-5 col-12">
-                 <h2 style="font-family: 'Segoe UI', sans-serif;">SẢN PHẨM NỔI BẬT</h2>
-              </div>
+
+
+@{
+    var popularList = ViewBag.Popular as List<moon.Models.Product>;
+}
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="title-section text-center mb-5 col-12">
+                <h2 style="font-family: 'Segoe UI', sans-serif;">SẢN PHẨM NỔI BẬT</h2>
+            </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 block-3">
-            <div class="nonloop-block-3 owl-carousel">
-
-            <!-- Khúc này là mấy cái item nè nữa lấy trong CSDL ra gán zô -->
-            <!-- Viết cái hàm á, đếm số lượng sản phẩm đã bán ra rồi hiển thị, nhưng-->
-            <!-- mà hơi khó, cái này tạm thời hiển thị sản phẩm lên thôi rồi rảnh -->
-            <!-- rồi làm, ưu tiên vỏ hàng, thanh toán, cửa hàng, tìm kiếm, lọc -->
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="images/model_1.png" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="#">Ấn tượng</a></h2>
-                  <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                  <div class="star-rating">
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                  </div>
+            <div class="col-md-12 block-3">
+                <div class="nonloop-block-3 owl-carousel">
+                    @if (popularList != null)
+                    {
+                        foreach (var item in popularList)
+                        {
+                            <div class="item">
+                                <div class="item-entry">
+                                    <a href="/Products/Details/@item.Id" class="product-item md-height bg-gray d-block">
+                                        <img src="@item.ImageUrls.FirstOrDefault()" alt="@item.Name" class="img-fluid" />
+                                    </a>
+                                    <h2 class="item-title">
+                                        <a href="/Products/Details/@item.Id">@item.Name</a>
+                                    </h2>
+                                    <strong class="item-price">@item.Price.ToString("N0") đ</strong>
+                                    <div class="star-rating">
+                                        <span class="icon-star2 text-warning"></span>
+                                        <span class="icon-star2 text-warning"></span>
+                                        <span class="icon-star2 text-warning"></span>
+                                        <span class="icon-star2 text-warning"></span>
+                                        <span class="icon-star2 text-warning"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
-              </div>
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="images/prod_3.png" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-                  <strong class="item-price"><del>$46.00</del> $28.00</strong>
-
-                  <div class="star-rating">
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="images/model_5.png" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-                  <strong class="item-price"><del>$46.00</del> $28.00</strong>
-
-                  <div class="star-rating">
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                  </div>
-
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="images/prod_1.png" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-                  <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                  <div class="star-rating">
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="images/model_7.png" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-                  <strong class="item-price">$58.00</strong>
-                  <div class="star-rating">
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                    <span class="icon-star2 text-warning"></span>
-                  </div>
-                </div>
-              </div>
-
             </div>
-          </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@{
+    var explore = ViewBag.Explore as IEnumerable<dynamic>;
+
+    var aoThun = explore?.FirstOrDefault(x => x.Name.ToString().Trim().ToLower() == "áo thun");
+    var mocKhoa = explore?.FirstOrDefault(x => x.Name.ToString().Trim().ToLower() == "móc khóa");
+    var padChuot = explore?.FirstOrDefault(x => x.Name.ToString().Trim().ToLower() == "lót chuột");
+}
+
+<div class="site-section">
+  <div class="container">
+    <div class="title-section mb-5">
+      <h2 style="font-family: 'Segoe UI', sans-serif;">KHÁM PHÁ</h2>
+    </div>
+    <div class="row align-items-stretch">
+      <div class="col-lg-8">
+        <div class="product-item sm-height full-height bg-gray">
+          <a href="/Products?categoryId=@aoThun?.Id" class="product-category">
+              Áo thun <span><br>@(aoThun?.Count ?? 0) sản phẩm</span>
+          </a>
+          <img src="~/images/aokhoac.jpg" alt="Image" class="img-fluid">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="product-item sm-height bg-gray mb-4">
+          <a href="/Products?categoryId=@mocKhoa?.Id" class="product-category">
+              Móc khóa <span><br>@(mocKhoa?.Count ?? 0) sản phẩm</span>
+          </a>
+          <img src="~/images/mockhoa.jpg" alt="Image" class="img-fluid">
+        </div>
+        <div class="product-item sm-height bg-gray">
+          <a href="/Products?categoryId=@padChuot?.Id" class="product-category">
+              Pad chuột <span><br>@(padChuot?.Count ?? 0) sản phẩm</span>
+          </a>
+          <img src="~/images/padchuot.jpg" alt="Image" class="img-fluid">
         </div>
       </div>
     </div>
-
-    <div class="site-section">
-      <div class="container">
-        <div class="title-section mb-5">
-          <h2 style="font-family: 'Segoe UI', sans-serif;">KHÁM PHÁ</h2>
-        </div>
-        <div class="row align-items-stretch">
-
-        <!-- Khúc này là sản phẩm khám phá nè, tạo cái hàm cộng lại hết sản phẩm rồi đưa ra, ví dụ như -->
-        <!-- áo thun bao nhiêu cái, móc khóa bao nhiêu cái để zô đây, rồi khi click vào thì chuyển qua bên -->
-        <!-- trang cửa hàng và tự động lọc mấy cái móc khóa nếu chọn móc khóa -->
-          <div class="col-lg-8">
-            <div class="product-item sm-height full-height bg-gray">
-              <a href="#" class="product-category">Áo thun <span>25 items</span></a>
-              <img src="~/images/aokhoac.jpg" alt="Image" class="img-fluid">
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="product-item sm-height bg-gray mb-4">
-              <a href="#" class="product-category">Móc khóa <span><br>25 items</span></a>
-              <img src="~/images/mockhoa.jpg" alt="Image" class="img-fluid">
-            </div>
-            <div class="product-item sm-height bg-gray">
-              <a href="#" class="product-category">Pad chuột <span><br>25 items</span></a>
-              <img src="~/images/padchuot.jpg" alt="Image" class="img-fluid">
-            </div>
+  </div>
+</div>
 
 
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="title-section mb-5 col-12">
-            <h2 style="font-family: 'Segoe UI', sans-serif;">PHỔ BIẾN</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/prod_2.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Gray Shoe</a></h2>
-            <strong class="item-price">$20.00</strong>
-          </div>
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/prod_3.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-            <strong class="item-price"><del>$46.00</del> $28.00</strong>
-          </div>
 
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/model_5.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-            <strong class="item-price"><del>$46.00</del> $28.00</strong>
 
-            <div class="star-rating">
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-            </div>
 
-          </div>
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/prod_1.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-            <strong class="item-price"><del>$46.00</del> $28.00</strong>
-            <div class="star-rating">
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-              <span class="icon-star2 text-warning"></span>
-            </div>
-          </div>
 
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/model_1.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Smooth Cloth</a></h2>
-            <strong class="item-price"><del>$46.00</del> $28.00</strong>
-          </div>
-          <div class="col-lg-4 col-md-6 item-entry mb-4">
-            <a href="#" class="product-item md-height bg-gray d-block">
-              <img src="images/model_7.png" alt="Image" class="img-fluid">
-            </a>
-            <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-            <strong class="item-price">$58.00</strong>
-          </div>
 
-        </div>
-      </div>
-    </div>
+
+
 

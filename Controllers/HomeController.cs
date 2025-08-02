@@ -14,7 +14,54 @@ namespace moon.Controllers
         {
             _context = context;
         }
-        public IActionResult Index() => View("~/Views/Home/Customer/Index.cshtml");
+        
+        public async Task<IActionResult> Index()
+{
+    // Lấy sản phẩm nổi bật
+    var featuredProducts = await _context.Products
+        .OrderBy(p => p.Name)
+        .Take(5)
+        .ToListAsync();
+
+    // Lấy sản phẩm phổ biến
+    var popularProducts = await _context.OrderItems
+        .GroupBy(oi => oi.ProductId)
+        .Select(g => new
+        {
+            ProductId = g.Key,
+            TotalSold = g.Sum(x => x.Quantity)
+        })
+        .OrderByDescending(x => x.TotalSold)
+        .Take(5)
+        .Join(_context.Products, x => x.ProductId, p => p.Id, (x, p) => p)
+        .ToListAsync();
+
+    // Lấy danh sách tất cả sản phẩm và nhóm theo CategoryId
+    var allProducts = await _context.Products.ToListAsync();
+
+    var explore = allProducts
+        .GroupBy(p => p.CategoryId)
+        .Select(g => new
+        {
+            CategoryId = g.Key,
+            Count = g.Count()
+        })
+        .Join(_context.Categories, g => g.CategoryId, c => c.Id, (g, c) => new
+        {
+            c.Id,
+            c.Name,
+            g.Count
+        })
+        .ToList();
+
+    ViewBag.Featured = featuredProducts;
+    ViewBag.Popular = popularProducts;
+    ViewBag.Explore = explore;
+
+    return View("~/Views/Home/Customer/Index.cshtml");
+}
+
+
 
        public IActionResult Receipt()
         {
