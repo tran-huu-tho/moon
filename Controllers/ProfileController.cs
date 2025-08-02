@@ -17,19 +17,22 @@ namespace moon.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            var email = HttpContext.Session.GetString("Email");
-            if (string.IsNullOrEmpty(email))
-                return RedirectToAction("Login", "Login");
+public IActionResult Index()
+{
+    var email = HttpContext.Session.GetString("Email");
+    if (string.IsNullOrEmpty(email))
+        return RedirectToAction("Login", "Login");
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (user == null)
-                return RedirectToAction("Login", "Login");
+    var user = _context.Users.FirstOrDefault(u => u.Email == email);
+    if (user == null)
+        return RedirectToAction("Login", "Login");
 
-            FillUserToViewBag(user);
-            return View("~/Views/Home/Customer/Profile.cshtml");
-        }
+    FillUserToViewBag(user);
+
+    string profileViewPath = user.Role ? "~/Views/Home/Manager/Profile.cshtml" : "~/Views/Home/Customer/Profile.cshtml";
+    return View(profileViewPath);
+}
+
 
         private void FillUserToViewBag(User user)
         {
@@ -49,89 +52,92 @@ namespace moon.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string name, string phone, string oldPassword, string newPassword, string confirmPassword, IFormFile Avatar)
+public IActionResult Index(string name, string phone, string oldPassword, string newPassword, string confirmPassword, IFormFile Avatar)
+{
+    var email = HttpContext.Session.GetString("Email");
+    if (string.IsNullOrEmpty(email))
+        return RedirectToAction("Login", "Login");
+
+    var user = _context.Users.FirstOrDefault(u => u.Email == email);
+    if (user == null)
+        return RedirectToAction("Login", "Login");
+
+    string profileViewPath = user.Role ? "~/Views/Home/Manager/Profile.cshtml" : "~/Views/Home/Customer/Profile.cshtml";
+
+    bool isChanged = false;
+
+    if (user.Name != name)
+    {
+        user.Name = name;
+        isChanged = true;
+    }
+
+    if (user.Phone != phone)
+    {
+        user.Phone = phone;
+        isChanged = true;
+    }
+
+    if (!string.IsNullOrEmpty(oldPassword))
+    {
+        if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
         {
-            var email = HttpContext.Session.GetString("Email");
-            if (string.IsNullOrEmpty(email))
-                return RedirectToAction("Login", "Login");
-
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (user == null)
-                return RedirectToAction("Login", "Login");
-
-            bool isChanged = false;
-
-            if (user.Name != name)
-            {
-                user.Name = name;
-                isChanged = true;
-            }
-
-            if (user.Phone != phone)
-            {
-                user.Phone = phone;
-                isChanged = true;
-            }
-
-            if (!string.IsNullOrEmpty(oldPassword))
-            {
-                if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
-                {
-                    ViewBag.Error = "Vui lòng nhập đầy đủ mật khẩu.";
-                    FillUserToViewBag(user);
-                    return View("~/Views/Home/Customer/Profile.cshtml");
-                }
-
-                if (user.Password != oldPassword)
-                {
-                    ViewBag.Error = "Mật khẩu cũ không đúng.";
-                    FillUserToViewBag(user);
-                    return View("~/Views/Home/Customer/Profile.cshtml");
-                }
-
-                if (newPassword == oldPassword)
-                {
-                    ViewBag.Error = "Mật khẩu mới không được trùng với mật khẩu cũ.";
-                    FillUserToViewBag(user);
-                    return View("~/Views/Home/Customer/Profile.cshtml");
-                }
-
-                if (newPassword.Length < 8 || newPassword.Length > 16 || !newPassword.Any(char.IsLetter) || !newPassword.Any(char.IsDigit))
-                {
-                    ViewBag.Error = "Mật khẩu mới phải dài 8–16 ký tự, bao gồm cả chữ và số.";
-                    FillUserToViewBag(user);
-                    return View("~/Views/Home/Customer/Profile.cshtml");
-                }
-
-                if (newPassword != confirmPassword)
-                {
-                    ViewBag.Error = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
-                    FillUserToViewBag(user);
-                    return View("~/Views/Home/Customer/Profile.cshtml");
-                }
-
-                user.Password = newPassword;
-                isChanged = true;
-            }
-
-            if (Avatar != null && Avatar.Length > 0)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    Avatar.CopyTo(ms);
-                    user.Avatar = ms.ToArray();
-                    isChanged = true;
-                }
-            }
-
-            if (isChanged)
-            {
-                _context.SaveChanges();
-                HttpContext.Session.SetString("UserName", user.Name);
-                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-            }
-
-            return RedirectToAction("Index");
+            ViewBag.Error = "Vui lòng nhập đầy đủ mật khẩu.";
+            FillUserToViewBag(user);
+            return View(profileViewPath);
         }
+
+        if (user.Password != oldPassword)
+        {
+            ViewBag.Error = "Mật khẩu cũ không đúng.";
+            FillUserToViewBag(user);
+            return View(profileViewPath);
+        }
+
+        if (newPassword == oldPassword)
+        {
+            ViewBag.Error = "Mật khẩu mới không được trùng với mật khẩu cũ.";
+            FillUserToViewBag(user);
+            return View(profileViewPath);
+        }
+
+        if (newPassword.Length < 8 || newPassword.Length > 16 || !newPassword.Any(char.IsLetter) || !newPassword.Any(char.IsDigit))
+        {
+            ViewBag.Error = "Mật khẩu mới phải dài 8–16 ký tự, bao gồm cả chữ và số.";
+            FillUserToViewBag(user);
+            return View(profileViewPath);
+        }
+
+        if (newPassword != confirmPassword)
+        {
+            ViewBag.Error = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+            FillUserToViewBag(user);
+            return View(profileViewPath);
+        }
+
+        user.Password = newPassword;
+        isChanged = true;
+    }
+
+    if (Avatar != null && Avatar.Length > 0)
+    {
+        using (var ms = new MemoryStream())
+        {
+            Avatar.CopyTo(ms);
+            user.Avatar = ms.ToArray();
+            isChanged = true;
+        }
+    }
+
+    if (isChanged)
+    {
+        _context.SaveChanges();
+        HttpContext.Session.SetString("UserName", user.Name);
+        TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+    }
+
+    return RedirectToAction("Index", "Profile");
+}
+
     }
 }

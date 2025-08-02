@@ -161,7 +161,38 @@ namespace moon.Controllers
         }
 
         public IActionResult AddCategory() => View("~/Views/Home/Manager/AddCategory.cshtml");
-        public IActionResult Profile() => View("~/Views/Home/Manager/Profile.cshtml");
+
+        
+        public IActionResult Profile()
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            // Truyền thông tin người dùng vào ViewBag
+            ViewBag.HoTen = user.Name;
+            ViewBag.Email = user.Email;
+            ViewBag.Phone = user.Phone;
+
+            string avatarUrl;
+            if (user.Avatar != null && user.Avatar.Length > 0)
+            {
+                string base64Avatar = Convert.ToBase64String(user.Avatar);
+                avatarUrl = $"data:image/png;base64,{base64Avatar}";
+            }
+            else
+            {
+                avatarUrl = "/images/avt.jpg";
+            }
+
+            ViewBag.Avatar = avatarUrl;
+
+            return View("~/Views/Home/Manager/Profile.cshtml");
+        }
 
 
         public IActionResult Product()
