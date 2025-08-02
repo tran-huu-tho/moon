@@ -6,10 +6,8 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Biểu đồ</h1>
-    <p class="mb-4">
-        Biểu đồ được dựng bằng thư viện <a target="_blank" href="https://www.chartjs.org/docs/latest/">Chart.js</a>.
-    </p>
+    <h1 class="h3 mb-2 text-gray-800">Biểu đồ doanh thu</h1>
+    <br>
 
     <!-- Content Row -->
     <div class="row">
@@ -18,7 +16,7 @@
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Biểu đồ cột</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
@@ -34,7 +32,7 @@
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Biểu đồ tròn</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-donut">
@@ -81,15 +79,21 @@
 <!-- Script Chart.js -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Dữ liệu từ ViewBag
+        const monthLabels = @Html.Raw(Json.Serialize(ViewBag.MonthLabels));
+        const monthRevenue = @Html.Raw(Json.Serialize(ViewBag.MonthRevenue));
+        const productLabels = @Html.Raw(Json.Serialize(ViewBag.ProductLabels));
+        const productCounts = @Html.Raw(Json.Serialize(ViewBag.ProductQuantities));
+
         // Bar Chart
         const ctxBar = document.getElementById("myBarChart").getContext("2d");
         new Chart(ctxBar, {
             type: 'bar',
             data: {
-                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4'],
+                labels: monthLabels,
                 datasets: [{
                     label: 'Doanh thu (VNĐ)',
-                    data: [1200000, 1900000, 3000000, 2500000],
+                    data: monthRevenue,
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1,
@@ -101,18 +105,11 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'top',
-                        labels: {
-                            boxWidth: 20,
-                            padding: 15
-                        }
+                        position: 'top'
                     },
                     title: {
                         display: true,
-                        text: 'Biểu đồ doanh thu theo tháng',
-                        font: {
-                            size: 16
-                        }
+                        text: 'Biểu đồ doanh thu theo tháng'
                     }
                 },
                 scales: {
@@ -133,11 +130,17 @@
         new Chart(ctxPie, {
             type: 'doughnut',
             data: {
-                labels: ['Móc khóa', 'Áo khoác', 'Vòng tay', 'Gối ôm'],
+                labels: productLabels,
                 datasets: [{
-                    data: [300, 50, 100, 80],
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a'],
+                    data: productCounts,
+                    backgroundColor: [
+                        '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+                        '#858796', '#5a5c69', '#20c9a6', '#ff6f61', '#8e44ad'
+                    ],
+                    hoverBackgroundColor: [
+                        '#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617',
+                        '#6c757d', '#343a40', '#1abc9c', '#ff4f41', '#732d91'
+                    ],
                     hoverBorderColor: "rgba(234, 236, 244, 1)"
                 }]
             },
@@ -146,18 +149,11 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 10,
-                            boxWidth: 20
-                        }
+                        position: 'bottom'
                     },
                     title: {
                         display: true,
-                        text: 'Tỉ lệ các loại sản phẩm',
-                        font: {
-                            size: 16
-                        }
+                        text: 'Tỉ lệ các loại sản phẩm'
                     }
                 },
                 cutout: '65%'

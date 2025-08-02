@@ -88,7 +88,54 @@ namespace moon.Controllers
 
 
 
-        public IActionResult Statistical() => View("~/Views/Home/Manager/Statistical.cshtml");
+        public async Task<IActionResult> Statistical()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Items)
+                .ToListAsync();
+
+            // Thống kê doanh thu theo tháng
+            var monthlyRevenue = orders
+                .GroupBy(o => o.OrderDate.Month)
+                .OrderBy(g => g.Key)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    Revenue = g.Sum(o => o.Items.Sum(i => i.Quantity * i.UnitPrice))
+                }).ToList();
+
+            ViewBag.MonthLabels = monthlyRevenue.Select(m => "Tháng " + m.Month).ToArray();
+            ViewBag.MonthRevenue = monthlyRevenue.Select(m => m.Revenue).ToArray();
+
+            // Lấy danh sách ID sản phẩm từ OrderItem
+            var productIds = orders
+                .SelectMany(o => o.Items)
+                .Select(i => i.ProductId)
+                .Distinct()
+                .ToList();
+
+            // Lấy dữ liệu Product từ DB
+            var products = await _context.Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id, p => p.Name); // Dùng tên sản phẩm thay vì CategoryName
+
+            // Thống kê số lượng từng sản phẩm
+            var productCounts = orders
+                .SelectMany(o => o.Items)
+                .GroupBy(i => i.ProductId)
+                .Select(g => new
+                {
+                    ProductName = products.ContainsKey(g.Key) ? products[g.Key] : "Không xác định",
+                    Quantity = g.Sum(i => i.Quantity)
+                }).ToList();
+
+            ViewBag.ProductLabels = productCounts.Select(p => p.ProductName).ToArray();
+            ViewBag.ProductQuantities = productCounts.Select(p => p.Quantity).ToArray();
+
+            return View("~/Views/Home/Manager/Statistical.cshtml");
+        }
+
+   
         public IActionResult StatusOrder()
         {
             var orders = _context.Orders.ToList();  // hoặc lấy bằng Include nếu cần thêm dữ liệu liên quan
