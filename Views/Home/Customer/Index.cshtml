@@ -51,7 +51,7 @@
                         {
                             <div class="item">
                                 <div class="item-entry">
-                                    <a href="/Products/Details/@item.Id" class="product-item md-height bg-gray d-block">
+                                    <a href="http://localhost:9999/Home/ProductDetail/@item.Id" class="product-item md-height bg-gray d-block">
                                         <img src="@item.ImageUrls.FirstOrDefault()" alt="@item.Name" class="img-fluid" />
                                     </a>
                                     <h2 class="item-title">
@@ -94,7 +94,7 @@
     <div class="row align-items-stretch">
       <div class="col-lg-8">
         <div class="product-item sm-height full-height bg-gray">
-          <a href="/Products?categoryId=@aoThun?.Id" class="product-category">
+          <a href="http://localhost:9999/Home/FilterByCategory?categoryName=%C3%81o%20thun" class="product-category">
               Áo thun <span><br>@(aoThun?.Count ?? 0) sản phẩm</span>
           </a>
           <img src="~/images/aokhoac.jpg" alt="Image" class="img-fluid">
@@ -102,13 +102,13 @@
       </div>
       <div class="col-lg-4">
         <div class="product-item sm-height bg-gray mb-4">
-          <a href="/Products?categoryId=@mocKhoa?.Id" class="product-category">
+          <a href="http://localhost:9999/Home/FilterByCategory?categoryName=M%C3%B3c%20kh%C3%B3a" class="product-category">
               Móc khóa <span><br>@(mocKhoa?.Count ?? 0) sản phẩm</span>
           </a>
           <img src="~/images/mockhoa.jpg" alt="Image" class="img-fluid">
         </div>
         <div class="product-item sm-height bg-gray">
-          <a href="/Products?categoryId=@padChuot?.Id" class="product-category">
+          <a href="http://localhost:9999/Home/FilterByCategory?categoryName=L%C3%B3t%20chu%E1%BB%99t" class="product-category">
               Pad chuột <span><br>@(padChuot?.Count ?? 0) sản phẩm</span>
           </a>
           <img src="~/images/padchuot.jpg" alt="Image" class="img-fluid">
