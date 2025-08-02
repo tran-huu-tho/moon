@@ -121,38 +121,6 @@
       "PackagePath": "staticwebassets\\images\\avt.jpg"
     },
     {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\blog_1.jpg",
-      "PackagePath": "staticwebassets\\images\\blog_1.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\children.jpg",
-      "PackagePath": "staticwebassets\\images\\children.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\cloth_1.jpg",
-      "PackagePath": "staticwebassets\\images\\cloth_1.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\cloth_2.jpg",
-      "PackagePath": "staticwebassets\\images\\cloth_2.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\cloth_3.jpg",
-      "PackagePath": "staticwebassets\\images\\cloth_3.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\hero_1.jpg",
-      "PackagePath": "staticwebassets\\images\\hero_1.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\hero_1.png",
-      "PackagePath": "staticwebassets\\images\\hero_1.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\hero_2.jpg",
-      "PackagePath": "staticwebassets\\images\\hero_2.jpg"
-    },
-    {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\men.jpg",
       "PackagePath": "staticwebassets\\images\\men.jpg"
     },
@@ -161,80 +129,16 @@
       "PackagePath": "staticwebassets\\images\\mockhoa.jpg"
     },
     {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_1.png",
-      "PackagePath": "staticwebassets\\images\\model_1.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_2.png",
-      "PackagePath": "staticwebassets\\images\\model_2.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_3.png",
-      "PackagePath": "staticwebassets\\images\\model_3.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_4.png",
-      "PackagePath": "staticwebassets\\images\\model_4.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_5.png",
-      "PackagePath": "staticwebassets\\images\\model_5.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_6.png",
-      "PackagePath": "staticwebassets\\images\\model_6.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\model_7.png",
-      "PackagePath": "staticwebassets\\images\\model_7.png"
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\moon.gif",
+      "PackagePath": "staticwebassets\\images\\moon.gif"
     },
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\padchuot.jpg",
       "PackagePath": "staticwebassets\\images\\padchuot.jpg"
     },
     {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\person_1.jpg",
-      "PackagePath": "staticwebassets\\images\\person_1.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\person_2.jpg",
-      "PackagePath": "staticwebassets\\images\\person_2.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\person_3.jpg",
-      "PackagePath": "staticwebassets\\images\\person_3.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\person_4.jpg",
-      "PackagePath": "staticwebassets\\images\\person_4.jpg"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\prod_1.png",
-      "PackagePath": "staticwebassets\\images\\prod_1.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\prod_2.png",
-      "PackagePath": "staticwebassets\\images\\prod_2.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\prod_3.png",
-      "PackagePath": "staticwebassets\\images\\prod_3.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\shoe.png",
-      "PackagePath": "staticwebassets\\images\\shoe.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\shoe_1.jpg",
-      "PackagePath": "staticwebassets\\images\\shoe_1.jpg"
-    },
-    {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\thumnail_main.png",
       "PackagePath": "staticwebassets\\images\\thumnail_main.png"
-    },
-    {
-      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\images\\women.jpg",
-      "PackagePath": "staticwebassets\\images\\women.jpg"
     },
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\js\\aos.js",
@@ -1003,6 +907,10 @@
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\Higround-x-Attack-on-Titan-Levi-Mousepad.avif",
       "PackagePath": "staticwebassets\\uploads\\Higround-x-Attack-on-Titan-Levi-Mousepad.avif"
+    },
+    {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\Hinh-anh-avatar-anime-nu-cute-2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\Hinh-anh-avatar-anime-nu-cute-2.jpg"
     },
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\uploads\\a.jpg",
@@ -8315,6 +8223,14 @@
     {
       "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\video\\demo.mp4",
       "PackagePath": "staticwebassets\\video\\demo.mp4"
+    },
+    {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\video\\demo1.mp4",
+      "PackagePath": "staticwebassets\\video\\demo1.mp4"
+    },
+    {
+      "Id": "Z:\\Đồ án 3\\moon\\wwwroot\\video\\demo2.mp4",
+      "PackagePath": "staticwebassets\\video\\demo2.mp4"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.moon.props",

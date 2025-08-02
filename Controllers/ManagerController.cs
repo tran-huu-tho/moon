@@ -18,7 +18,47 @@ namespace moon.Controllers
             _context = context;
         }
 
-        public IActionResult Index() => View("~/Views/Home/Manager/Index.cshtml");
+        public IActionResult Index()
+        {
+            var totalOrders = _context.Orders.Count();
+            var totalRevenue = _context.Orders.Sum(o => o.TotalAmount);
+            var totalProducts = _context.Products.Count();
+
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
+            var bestSeller = (from od in _context.OrderItems
+                            join o in _context.Orders on od.OrderId equals o.Id
+                            join p in _context.Products on od.ProductId equals p.Id
+                            where o.OrderDate.Month == currentMonth && o.OrderDate.Year == currentYear
+                            group od by new { od.ProductId, p.Name } into g
+                            orderby g.Sum(x => x.Quantity) descending
+                            select new
+                            {
+                                ProductName = g.Key.Name,
+                                SoldQuantity = g.Sum(x => x.Quantity)
+                            }).FirstOrDefault();
+
+            if (bestSeller != null)
+            {
+                ViewBag.BestSellerName = bestSeller.ProductName;
+                ViewBag.BestSellerSold = bestSeller.SoldQuantity;
+            }
+            else
+            {
+                ViewBag.BestSellerName = "Không có dữ liệu";
+                ViewBag.BestSellerSold = 0;
+            }
+
+            ViewBag.TotalOrders = totalOrders;
+            ViewBag.TotalRevenue = totalRevenue;
+            ViewBag.TotalProducts = totalProducts;
+
+
+            return View("~/Views/Home/Manager/Index.cshtml");
+        }
+
+
         public IActionResult Category()
         {
             // Lấy danh sách Category và đếm số sản phẩm từng loại
