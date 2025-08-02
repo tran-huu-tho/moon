@@ -74,7 +74,20 @@ namespace moon.Controllers
             ViewBag.Categories = categories;
             return View("~/Views/Home/Manager/Category.cshtml");
         }
-        public IActionResult Invoice() => View("~/Views/Home/Manager/Invoice.cshtml");
+
+
+        public async Task<IActionResult> Invoice()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Items)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+
+            return View("~/Views/Home/Manager/Invoice.cshtml", orders);
+        }
+
+
+
         public IActionResult Statistical() => View("~/Views/Home/Manager/Statistical.cshtml");
         public IActionResult StatusOrder()
         {

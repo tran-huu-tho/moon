@@ -1,3 +1,5 @@
+@model List<moon.Models.Order>  // ✔ CHÍNH XÁC
+
 @{
     Layout = "~/Views/Shared/Manager.cshtml";
     ViewData["Title"] = "Hóa đơn";
@@ -43,121 +45,68 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <tr>
-                                            <td>Nguyễn Văn A</td>
-                                            <td>2 x Vòng cổ Sharingan, 1 x Móc khóa Naruto</td>
-                                            <td>123 Lê Lợi, Q.1, TP.HCM</td>
-                                            <td>170,000đ</td>
-                                            <td>2025-07-14</td>
-                                            <td>Giao trước 12h</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Trần Thị B</td>
-                                            <td>1 x Móc khóa One Piece, 1 x Nhẫn Akatsuki</td>
-                                            <td>45 Nguyễn Huệ, Q.1, TP.HCM</td>
-                                            <td>85,000đ</td>
-                                            <td>2025-07-13</td>
-                                            <td>Không đá</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Lê Văn C</td>
-                                            <td>3 x Mặt nạ Kakashi</td>
-                                            <td>90 Hoàng Văn Thụ, Q.Phú Nhuận</td>
-                                            <td>165,000đ</td>
-                                            <td>2025-07-13</td>
-                                            <td>Gọi trước khi giao</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Phạm Thị D</td>
-                                            <td>2 x Áo choàng Akatsuki, 2 x Băng trán Naruto</td>
-                                            <td>12 Trường Sa, Q.Bình Thạnh</td>
-                                            <td>420,000đ</td>
-                                            <td>2025-07-12</td>
-                                            <td>Đừng bấm chuông</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Đặng Minh E</td>
-                                            <td>1 x Bóng đèn Dragon Ball, 1 x Móc khóa Luffy</td>
-                                            <td>78 CMT8, Q.10</td>
-                                            <td>130,000đ</td>
-                                            <td>2025-07-12</td>
-                                            <td></td>
-                                            </tr>
-                                            <tr>
-                                            <td>Ngô Nhật F</td>
-                                            <td>1 x Hộp nhẫn Itachi, 1 x Băng trán Konoha</td>
-                                            <td>55 Lạc Long Quân, Q.11</td>
-                                            <td>145,000đ</td>
-                                            <td>2025-07-11</td>
-                                            <td>Ưu tiên giao nhanh</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Hồ Mai G</td>
-                                            <td>2 x Móc khóa Gojo, 1 x Mặt dây chuyền JJK</td>
-                                            <td>111 Pasteur, Q.3</td>
-                                            <td>185,000đ</td>
-                                            <td>2025-07-10</td>
-                                            <td></td>
-                                            </tr>
-                                            <tr>
-                                            <td>Võ Hữu H</td>
-                                            <td>1 x Balo Inosuke, 2 x Găng tay Tanjiro</td>
-                                            <td>234 Lý Thường Kiệt, Q.Tân Bình</td>
-                                            <td>310,000đ</td>
-                                            <td>2025-07-10</td>
-                                            <td>Giao ban ngày</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Trịnh Ái I</td>
-                                            <td>1 x Gối ôm Pikachu</td>
-                                            <td>66 Phan Xích Long, Q.Phú Nhuận</td>
-                                            <td>90,000đ</td>
-                                            <td>2025-07-09</td>
-                                            <td>Đặt lần 2</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Nguyễn Nhật J</td>
-                                            <td>2 x Huy hiệu Hunter x Hunter</td>
-                                            <td>19/5 Quang Trung, Gò Vấp</td>
-                                            <td>110,000đ</td>
-                                            <td>2025-07-09</td>
-                                            <td>Liên hệ Zalo trước</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Trần Văn K</td>
-                                            <td>1 x Áo Hoodie Luffy</td>
-                                            <td>123 Trần Hưng Đạo, Q.5</td>
-                                            <td>220,000đ</td>
-                                            <td>2025-07-08</td>
-                                            <td>Đặt giúp bạn gái</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Lý Minh L</td>
-                                            <td>3 x Sticker Anime tổng hợp</td>
-                                            <td>87 Võ Văn Tần, Q.3</td>
-                                            <td>60,000đ</td>
-                                            <td>2025-07-08</td>
-                                            <td>Giao nhanh</td>
-                                            </tr>
-                                            <tr>
-                                            <td>Đoàn Phương M</td>
-                                            <td>2 x Băng trán Làng Cát, 1 x Móc khóa Sasuke</td>
-                                            <td>98 Tôn Thất Thuyết, Q.4</td>
-                                            <td>150,000đ</td>
-                                            <td>2025-07-07</td>
-                                            <td></td>
-                                            </tr>
-                                            <tr>
-                                            <td>Nguyễn Thị N</td>
-                                            <td>1 x Mũ One Piece, 2 x Nhẫn Sharingan</td>
-                                            <td>08 Trường Chinh, Q.Tân Phú</td>
-                                            <td>180,000đ</td>
-                                            <td>2025-07-07</td>
-                                            <td>Đừng để ngoài cửa</td>
-                                            </tr>
-                                        </tbody>
+@foreach (var order in Model)
+{
+    <tr>
+        <td>@order.FullName</td>
+        <td>
+            @if (order.Items != null)
+            {
+                foreach (var item in order.Items)
+                {
+                    <span>@item.Quantity x @item.ProductName</span><br />
+                }
+            }
+            else
+            {
+                <span>Không có sản phẩm</span>
+            }
+        </td>
+        <td data-ward="@order.Ward" data-district="@order.District" data-province="@order.Province">
+            Đang tải...
+        </td>
+        <td>@order.TotalAmount.ToString("N0")đ</td>
+        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+        <td>@order.Note</td>
+    </tr>
+}
+</tbody>
+
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+@section Scripts {
+    <script>
+        // Tải dữ liệu tỉnh/huyện/xã
+        async function loadLocationData() {
+            const [provinces, districts, wards] = await Promise.all([
+                fetch("https://provinces.open-api.vn/api/p/").then(res => res.json()),
+                fetch("https://provinces.open-api.vn/api/d/").then(res => res.json()),
+                fetch("https://provinces.open-api.vn/api/w/").then(res => res.json())
+            ]);
+
+            // Duyệt qua tất cả các ô địa chỉ để thay đổi mã thành tên
+            document.querySelectorAll("td[data-ward]").forEach(td => {
+                const wardCode = td.dataset.ward;
+                const districtCode = td.dataset.district;
+                const provinceCode = td.dataset.province;
+
+                const ward = wards.find(w => w.code == wardCode);
+                const district = districts.find(d => d.code == districtCode);
+                const province = provinces.find(p => p.code == provinceCode);
+
+                const wardName = ward ? ward.name : wardCode;
+                const districtName = district ? district.name : districtCode;
+                const provinceName = province ? province.name : provinceCode;
+
+                td.innerText = `${wardName}, ${districtName}, ${provinceName}`;
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", loadLocationData);
+    </script>
+}
