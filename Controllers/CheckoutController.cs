@@ -179,6 +179,117 @@ namespace moon.Controllers
 
             return "CTHD" + (start + indexOffset).ToString("D3");
         }
+        [HttpGet]
+        public IActionResult BuyNow(string id, int quantity = 1)
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("Login", "Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                return RedirectToAction("Login", "Login");
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return NotFound();
+
+            var cartItem = new CartItem
+            {
+                ProductId = product.Id,
+                ProductName = product.Name,
+                ImageUrl = product.ImageUrls?.FirstOrDefault() ?? "/images/default.png",
+                Price = product.Price,
+                Quantity = quantity, // ✅ cập nhật theo giá trị người dùng chọn
+                StockQuantity = product.StockQuantity
+            };
+
+            TempData["BuyNowItem"] = System.Text.Json.JsonSerializer.Serialize(cartItem);
+            return View("~/Views/Home/Customer/BuyNow.cshtml", cartItem);
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult PlaceBuyNowOrder(
+            string FullName,
+            string PhoneNumber,
+            string Province,
+            string District,
+            string Ward,
+            string Note,
+            string PaymentMethod)
+        {
+            if (string.IsNullOrWhiteSpace(FullName) ||
+                string.IsNullOrWhiteSpace(PhoneNumber) ||
+                string.IsNullOrWhiteSpace(Province) || Province == "-- Chọn Tỉnh/Thành phố --" ||
+                string.IsNullOrWhiteSpace(District) || District == "-- Chọn Quận/Huyện --" ||
+                string.IsNullOrWhiteSpace(Ward) || Ward == "-- Chọn Phường/Xã --")
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập đầy đủ thông tin giao hàng.";
+                return RedirectToAction("BuyNow");
+            }
+
+            var email = HttpContext.Session.GetString("Email");
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                return RedirectToAction("Login", "Login");
+
+            var cartItemJson = TempData["BuyNowItem"]?.ToString();
+            if (string.IsNullOrEmpty(cartItemJson))
+                return RedirectToAction("Index", "Home");
+
+            var cartItem = System.Text.Json.JsonSerializer.Deserialize<CartItem>(cartItemJson);
+            if (cartItem == null)
+                return RedirectToAction("Index", "Home");
+
+            decimal shippingFee = 30000;
+            decimal total = cartItem.Total + shippingFee;
+
+            string newOrderId = GenerateNextOrderId();
+            string newOrderItemId = GenerateNextOrderItemId(0);
+
+            var orderItem = new OrderItem
+            {
+                Id = newOrderItemId,
+                ProductId = cartItem.ProductId,
+                ProductName = cartItem.ProductName,
+                Quantity = cartItem.Quantity,
+                UnitPrice = cartItem.Price,
+                OrderId = newOrderId
+            };
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == cartItem.ProductId);
+            if (product != null)
+            {
+                product.StockQuantity -= cartItem.Quantity;
+                if (product.StockQuantity < 0) product.StockQuantity = 0;
+            }
+
+            var order = new Order
+            {
+                Id = newOrderId,
+                UserId = user.Id,
+                FullName = FullName,
+                PhoneNumber = PhoneNumber,
+                Province = Province,
+                District = District,
+                Ward = Ward,
+                Note = Note,
+                PaymentMethod = PaymentMethod,
+                TotalAmount = total,
+                ShippingFee = shippingFee,
+                OrderDate = DateTime.Now,
+                Items = new List<OrderItem> { orderItem },
+                Status = "Chờ xác nhận"
+            };
+
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            return RedirectToAction("ThankYou");
+        }
 
 
     }

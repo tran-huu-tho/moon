@@ -55,43 +55,53 @@
                     </strong>
                 </p>
 
-                <form asp-controller="Cart" asp-action="AddToCart" method="get">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-start align-items-center mb-2">
-                            <div class="input-group" style="max-width: 120px;">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-primary btn-decrease" type="button" @(Model.StockQuantity == 0 ? "disabled" : "")>&minus;</button>
-                                </div>
-                                <input type="text" class="form-control text-center"
-                                       name="quantity"
-                                       value="@(Model.StockQuantity == 0 ? 0 : 1)"
-                                       id="quantityInput"
-                                       @(Model.StockQuantity == 0 ? "readonly" : "") />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-primary btn-increase" type="button" @(Model.StockQuantity == 0 ? "disabled" : "")>&plus;</button>
-                                </div>
+                <!-- SỐ LƯỢNG -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-start align-items-center mb-2">
+                        <div class="input-group" style="max-width: 120px;">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-primary btn-decrease" type="button" @(Model.StockQuantity == 0 ? "disabled" : "")>&minus;</button>
                             </div>
-                            <span class="text-muted" style="margin-left: 15px;">
-                                @(Model.StockQuantity == 0 ? "Hết hàng" : $"{Model.StockQuantity} sản phẩm có sẵn")
-                            </span>
+                            <input type="text" class="form-control text-center"
+                                   value="@(Model.StockQuantity == 0 ? 0 : 1)"
+                                   id="quantityInput"
+                                   @(Model.StockQuantity == 0 ? "readonly" : "") />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary btn-increase" type="button" @(Model.StockQuantity == 0 ? "disabled" : "")>&plus;</button>
+                            </div>
                         </div>
+                        <span class="text-muted" style="margin-left: 15px;">
+                            @(Model.StockQuantity == 0 ? "Hết hàng" : $"{Model.StockQuantity} sản phẩm có sẵn")
+                        </span>
                     </div>
+                </div>
 
-                    <div class="d-flex">
-                        <button type="submit" class="btn btn-sm height-auto px-4 py-3 btn-outline-primary"
-                                @(Model.StockQuantity == 0 ? "disabled" : "")>
-                            Thêm vào giỏ
-                        </button>
+                <!-- NÚT HÀNH ĐỘNG -->
+                <div class="d-flex">
+                    <!-- Thêm vào giỏ -->
+                   <form asp-controller="Cart" asp-action="AddToCart" method="get">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                <input type="hidden" name="quantity" id="quantityForAddToCart" value="1" />
+                <button type="submit" class="btn btn-outline-primary btn-lg px-4 py-2 fw-bold"
+                        @(Model.StockQuantity == 0 ? "disabled" : "")>
+                    THÊM VÀO GIỎ
+                </button>
+            </form>
 
-                        <a asp-controller="Order" asp-action="BuyNow" asp-route-id="@Model.Id"
-                           class="btn btn-sm height-auto px-4 py-3 btn-danger"
-                           style="margin-left: 15px;">
-                            MUA NGAY
-                        </a>
-                    </div>
-                </form>
+
+                    <!-- Mua ngay -->
+                    <form asp-controller="Checkout" asp-action="BuyNow" method="get" style="display:inline; margin-left:10px;">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
+                       <button type="submit" class="btn btn-sm height-auto px-4 py-3 btn-danger"
+                            @(Model.StockQuantity == 0 ? "disabled" : "")>
+                        MUA NGAY
+                    </button>
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -122,34 +132,38 @@
             }
 
             const quantityInput = document.getElementById("quantityInput");
+          const addToCartQuantity = document.getElementById("quantityForAddToCart");
+
+            const hiddenQuantity = document.getElementById("hiddenQuantity");
             const btnMinus = document.querySelector(".btn-decrease");
             const btnPlus = document.querySelector(".btn-increase");
             const maxQuantity = @Model.StockQuantity;
 
-            btnMinus?.addEventListener("click", function () {
-                let currentValue = parseInt(quantityInput.value) || 1;
-                if (currentValue > 1) {
-                    quantityInput.value = currentValue - 1;
-                }
-            });
-
-            btnPlus?.addEventListener("click", function () {
-                let currentValue = parseInt(quantityInput.value) || 1;
-                if (currentValue < maxQuantity) {
-                    quantityInput.value = currentValue + 1;
-                }
-            });
-
-            quantityInput?.addEventListener("input", function () {
-                let value = parseInt(this.value.replace(/\D/g, ""));
+            function syncQuantity() {
+                let value = parseInt(quantityInput.value.replace(/\D/g, ""));
                 if (isNaN(value) || value < 1) {
-                    this.value = 1;
+                    value = 1;
                 } else if (value > maxQuantity) {
-                    this.value = maxQuantity;
-                } else {
-                    this.value = value;
+                    value = maxQuantity;
                 }
+                quantityInput.value = value;
+                if (addToCartQuantity) addToCartQuantity.value = value;
+                if (hiddenQuantity) hiddenQuantity.value = value;
+            }
+
+            btnMinus?.addEventListener("click", () => {
+                let value = parseInt(quantityInput.value) || 1;
+                if (value > 1) quantityInput.value = --value;
+                syncQuantity();
             });
+
+            btnPlus?.addEventListener("click", () => {
+                let value = parseInt(quantityInput.value) || 1;
+                if (value < maxQuantity) quantityInput.value = ++value;
+                syncQuantity();
+            });
+
+            quantityInput?.addEventListener("input", syncQuantity);
         });
     </script>
 }
