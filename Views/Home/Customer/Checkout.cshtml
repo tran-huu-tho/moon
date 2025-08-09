@@ -121,75 +121,75 @@
   </div>
 </form>
 
-<!-- JavaScript load địa chỉ -->
+<!-- JavaScript load địa chỉ (1 request duy nhất) -->
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Load địa chỉ
       const provinceSelect = document.getElementById("province");
       const districtSelect = document.getElementById("district");
       const wardSelect = document.getElementById("ward");
 
-      fetch("https://provinces.open-api.vn/api/p/")
+      let allData = []; // lưu toàn bộ dữ liệu
+
+      // Gọi API lấy tất cả dữ liệu depth=3
+      fetch("https://provinces.open-api.vn/api/?depth=3")
         .then(res => res.json())
-        .then(provinces => {
-          provinces.forEach(p => {
+        .then(data => {
+          allData = data;
+          // Load danh sách tỉnh
+          allData.forEach(p => {
             const opt = new Option(p.name, p.code);
             provinceSelect.appendChild(opt);
           });
+        })
+        .catch(err => {
+          console.error("Lỗi tải dữ liệu địa phương:", err);
+          Swal.fire("Lỗi", "Không thể tải dữ liệu địa phương. Vui lòng thử lại.", "error");
         });
 
+      // Khi chọn tỉnh
       provinceSelect.addEventListener("change", function () {
-        const provinceCode = this.value;
-        districtSelect.innerHTML = '<option>-- Chọn Quận/Huyện --</option>';
-        wardSelect.innerHTML = '<option>-- Chọn Phường/Xã --</option>';
+        const provinceCode = Number(this.value);
+        districtSelect.innerHTML = '<option value="">-- Chọn Quận/Huyện --</option>';
+        wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
         districtSelect.disabled = true;
         wardSelect.disabled = true;
 
-        if (provinceCode) {
-          fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`)
-            .then(res => res.json())
-            .then(data => {
-              data.districts.forEach(d => {
-                const opt = new Option(d.name, d.code);
-                districtSelect.appendChild(opt);
-              });
-              districtSelect.disabled = false;
+        if (provinceCode > 0) {
+          const province = allData.find(p => p.code === provinceCode);
+          if (province && Array.isArray(province.districts)) {
+            province.districts.forEach(d => {
+              const opt = new Option(d.name, d.code);
+              districtSelect.appendChild(opt);
             });
+            districtSelect.disabled = false;
+          }
         }
       });
 
+      // Khi chọn huyện
       districtSelect.addEventListener("change", function () {
-        const districtCode = this.value;
-        wardSelect.innerHTML = '<option>-- Chọn Phường/Xã --</option>';
+        const districtCode = Number(this.value);
+        wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
         wardSelect.disabled = true;
 
-        if (districtCode) {
-          fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`)
-            .then(res => res.json())
-            .then(data => {
-              data.wards.forEach(w => {
+        if (districtCode > 0) {
+          const provinceCode = Number(provinceSelect.value);
+          const province = allData.find(p => p.code === provinceCode);
+          if (province) {
+            const district = province.districts.find(d => d.code === districtCode);
+            if (district && Array.isArray(district.wards)) {
+              district.wards.forEach(w => {
                 const opt = new Option(w.name, w.code);
                 wardSelect.appendChild(opt);
               });
               wardSelect.disabled = false;
-            });
+            }
+          }
         }
       });
-
-      
-      @if (TempData["ErrorMessage"] != null)
-      {
-        <text>
-          Swal.fire({
-            icon: 'error',
-            title: 'Thiếu thông tin',
-            text: '@Html.Raw(TempData["ErrorMessage"])'
-          });
-        </text>
-      }
     });
   </script>
 }

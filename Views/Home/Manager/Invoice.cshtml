@@ -80,33 +80,35 @@
 
 
 @section Scripts {
-    <script>
-        // Tải dữ liệu tỉnh/huyện/xã
-        async function loadLocationData() {
-            const [provinces, districts, wards] = await Promise.all([
-                fetch("https://provinces.open-api.vn/api/p/").then(res => res.json()),
-                fetch("https://provinces.open-api.vn/api/d/").then(res => res.json()),
-                fetch("https://provinces.open-api.vn/api/w/").then(res => res.json())
-            ]);
+<script>
+    async function loadLocationData() {
+        try {
+            // Lấy toàn bộ dữ liệu tỉnh/huyện/xã chỉ 1 lần
+            const provinces = await fetch("https://provinces.open-api.vn/api/?depth=3").then(res => res.json());
 
-            // Duyệt qua tất cả các ô địa chỉ để thay đổi mã thành tên
             document.querySelectorAll("td[data-ward]").forEach(td => {
-                const wardCode = td.dataset.ward;
-                const districtCode = td.dataset.district;
-                const provinceCode = td.dataset.province;
+                const wardCode = Number(td.dataset.ward);
+                const districtCode = Number(td.dataset.district);
+                const provinceCode = Number(td.dataset.province);
 
-                const ward = wards.find(w => w.code == wardCode);
-                const district = districts.find(d => d.code == districtCode);
-                const province = provinces.find(p => p.code == provinceCode);
+                const province = provinces.find(p => p.code === provinceCode);
+                const district = province?.districts.find(d => d.code === districtCode);
+                const ward = district?.wards.find(w => w.code === wardCode);
 
-                const wardName = ward ? ward.name : wardCode;
-                const districtName = district ? district.name : districtCode;
-                const provinceName = province ? province.name : provinceCode;
-
-                td.innerText = `${wardName}, ${districtName}, ${provinceName}`;
+                td.innerText = [
+                    ward?.name || wardCode,
+                    district?.name || districtCode,
+                    province?.name || provinceCode
+                ].join(", ");
+            });
+        } catch (err) {
+            console.error("Lỗi tải dữ liệu địa phương:", err);
+            document.querySelectorAll("td[data-ward]").forEach(td => {
+                td.innerText = "Không tải được địa chỉ";
             });
         }
+    }
 
-        document.addEventListener("DOMContentLoaded", loadLocationData);
-    </script>
+    document.addEventListener("DOMContentLoaded", loadLocationData);
+</script>
 }
