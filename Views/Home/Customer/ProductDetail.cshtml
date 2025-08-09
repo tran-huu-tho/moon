@@ -77,30 +77,37 @@
                 </div>
 
                 <!-- NÚT HÀNH ĐỘNG -->
-                <div class="d-flex">
-                    <!-- Thêm vào giỏ -->
-                   <form asp-controller="Cart" asp-action="AddToCart" method="get">
-                <input type="hidden" name="id" value="@Model.Id" />
-                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-                <input type="hidden" name="quantity" id="quantityForAddToCart" value="1" />
-                <button type="submit" class="btn btn-outline-primary btn-lg px-4 py-2 fw-bold"
-                        @(Model.StockQuantity == 0 ? "disabled" : "")>
-                    THÊM VÀO GIỎ
-                </button>
-            </form>
+                <style>
+.btn-product {
+    border-radius: 12px;
+}
+</style>
 
+<div class="d-flex">
+    <!-- Thêm vào giỏ -->
+    <form asp-controller="Cart" asp-action="AddToCart" method="get">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+        <input type="hidden" name="quantity" id="quantityForAddToCart" value="1" />
+        <button type="submit"
+                class="btn btn-outline-primary btn-product"
+                @(Model.StockQuantity == 0 ? "disabled" : "")>
+            THÊM VÀO GIỎ
+        </button>
+    </form>
 
-                    <!-- Mua ngay -->
-                    <form asp-controller="Checkout" asp-action="BuyNow" method="get" style="display:inline; margin-left:10px;">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
-                       <button type="submit" class="btn btn-sm height-auto px-4 py-3 btn-danger"
-                            @(Model.StockQuantity == 0 ? "disabled" : "")>
-                        MUA NGAY
-                    </button>
+    <!-- Mua ngay -->
+    <form asp-controller="Checkout" asp-action="BuyNow" method="get" style="margin-left:10px;">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
+        <button type="submit"
+                class="btn btn-danger btn-product"
+                @(Model.StockQuantity == 0 ? "disabled" : "")>
+            MUA NGAY
+        </button>
+    </form>
+</div>
 
-                    </form>
-                </div>
 
             </div>
         </div>
