@@ -106,71 +106,69 @@
     </div>
 </form>
 
-<!-- JavaScript load địa chỉ -->
+<!-- JavaScript load địa chỉ (1 request duy nhất) -->
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const provinceSelect = document.getElementById("province");
             const districtSelect = document.getElementById("district");
             const wardSelect = document.getElementById("ward");
 
-            fetch("https://provinces.open-api.vn/api/p/")
+            if (!provinceSelect || !districtSelect || !wardSelect) {
+                console.error("Không tìm thấy một trong các thẻ select");
+                return;
+            }
+
+            let allData = [];
+
+            // Gọi API lấy tất cả dữ liệu depth=3
+            fetch("https://provinces.open-api.vn/api/?depth=3")
                 .then(res => res.json())
-                .then(provinces => {
-                    provinces.forEach(p => {
-                        const opt = new Option(p.name, p.code);
-                        provinceSelect.appendChild(opt);
+                .then(data => {
+                    allData = data;
+                    provinceSelect.innerHTML = '<option value="">-- Chọn Tỉnh/Thành --</option>';
+                    allData.forEach(p => {
+                        provinceSelect.appendChild(new Option(p.name, p.code));
                     });
+                })
+                .catch(err => {
+                    console.error("Lỗi tải dữ liệu địa phương:", err);
+                    Swal.fire("Lỗi", "Không thể tải dữ liệu địa phương. Vui lòng thử lại.", "error");
                 });
 
+            // Khi chọn tỉnh
             provinceSelect.addEventListener("change", function () {
-                const provinceCode = this.value;
-                districtSelect.innerHTML = '<option>-- Chọn Quận/Huyện --</option>';
-                wardSelect.innerHTML = '<option>-- Chọn Phường/Xã --</option>';
-                districtSelect.disabled = true;
+                const provinceCode = Number(this.value);
+                districtSelect.innerHTML = '<option value="">-- Chọn Quận/Huyện --</option>';
+                wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
+                districtSelect.disabled = !provinceCode;
                 wardSelect.disabled = true;
 
-                if (provinceCode) {
-                    fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`)
-                        .then(res => res.json())
-                        .then(data => {
-                            data.districts.forEach(d => {
-                                const opt = new Option(d.name, d.code);
-                                districtSelect.appendChild(opt);
-                            });
-                            districtSelect.disabled = false;
-                        });
-                }
-            });
-
-            districtSelect.addEventListener("change", function () {
-                const districtCode = this.value;
-                wardSelect.innerHTML = '<option>-- Chọn Phường/Xã --</option>';
-                wardSelect.disabled = true;
-
-                if (districtCode) {
-                    fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`)
-                        .then(res => res.json())
-                        .then(data => {
-                            data.wards.forEach(w => {
-                                const opt = new Option(w.name, w.code);
-                                wardSelect.appendChild(opt);
-                            });
-                            wardSelect.disabled = false;
-                        });
-                }
-            });
-
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <text>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Thiếu thông tin',
-                        text: '@Html.Raw(TempData["ErrorMessage"])'
+                const province = allData.find(p => p.code === provinceCode);
+                if (province && Array.isArray(province.districts)) {
+                    province.districts.forEach(d => {
+                        districtSelect.appendChild(new Option(d.name, d.code));
                     });
-                </text>
-            }
+                }
+            });
+
+            // Khi chọn huyện
+            districtSelect.addEventListener("change", function () {
+                const districtCode = Number(this.value);
+                wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
+                wardSelect.disabled = !districtCode;
+
+                const province = allData.find(p => p.code === Number(provinceSelect.value));
+                if (province) {
+                    const district = province.districts.find(d => d.code === districtCode);
+                    if (district && Array.isArray(district.wards)) {
+                        district.wards.forEach(w => {
+                            wardSelect.appendChild(new Option(w.name, w.code));
+                        });
+                    }
+                }
+            });
         });
     </script>
 }
