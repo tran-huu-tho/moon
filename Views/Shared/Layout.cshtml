@@ -2,26 +2,27 @@
 @{
   Layout = null;
   var userName = Context.Session.GetString("UserName");
-   var email = Context.Session.GetString("Email");
-    int cartCount = 0;
+  var email = Context.Session.GetString("Email");
+  int cartCount = 0;
 
-    if (!string.IsNullOrEmpty(email))
+  if (!string.IsNullOrEmpty(email))
+  {
+    var db = Context.RequestServices.GetService(typeof(moon.Models.ApplicationDbContext)) as
+    moon.Models.ApplicationDbContext;
+    var user = db.Users.FirstOrDefault(u => u.Email == email);
+    if (user != null)
     {
-        var db = Context.RequestServices.GetService(typeof(moon.Models.ApplicationDbContext)) as moon.Models.ApplicationDbContext;
-        var user = db.Users.FirstOrDefault(u => u.Email == email);
-        if (user != null)
-        {
-            cartCount = db.CartItems.Where(c => c.UserId == user.Id).Count();
+      cartCount = db.CartItems.Where(c => c.UserId == user.Id).Count();
 
-        }
     }
+  }
 }
 @RenderSection("Scripts", required: false)
 
 @if (TempData["Success"] != null)
 {
   <div id="success-toast" class="position-fixed alert alert-success text-center" style="top: 50%; left: 50%; transform: translate(-50%, -50%);
-                  z-index: 1055; min-width: 300px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                    z-index: 1055; min-width: 300px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
     @TempData["Success"]
   </div>
 
@@ -74,15 +75,16 @@
                 else
                 {
                   <li class="d-lg-none dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@userName</a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index">Hồ sơ</a></li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@userName</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index">Hồ sơ</a></li>
 
-                    <li><a class="dropdown-item"  asp-controller="Home" asp-action="Receipt">Đơn hàng</a></li>
+                      <li><a class="dropdown-item" asp-controller="Home" asp-action="Receipt">Đơn hàng</a></li>
 
-                    <li><a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout">Đăng xuất</a></li>
-                  </ul>
-                </li>
+                      <li><a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
+                      </li>
+                    </ul>
+                  </li>
 
                 }
               </ul>
@@ -90,7 +92,6 @@
           </div>
 
           <div class="icons d-flex align-items-center">
-            <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
             <a asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
               <span class="icon-shopping-bag"></span>
               <span class="number">@cartCount</span>
@@ -106,13 +107,14 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow-sm">
                   <a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i
-                  class="fas fa-user-circle me-2"></i> Hồ sơ</a>
+                      class="fas fa-user-circle me-2"></i> Hồ sơ</a>
 
-              <a class="dropdown-item" asp-controller="Home" asp-action="Receipt"><i class="fas fa-receipt me-2"></i> Đơn hàng</a>
+                  <a class="dropdown-item" asp-controller="Home" asp-action="Receipt"><i class="fas fa-receipt me-2"></i>
+                    Đơn hàng</a>
 
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout"><i
-                  class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item text-danger" asp-controller="Login" asp-action="Logout"><i
+                      class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>
 
                 </div>
               </div>
@@ -122,92 +124,104 @@
           </div>
         </div>
       </div>
-    </div>
 
-    @RenderBody()
-
-    <footer class="site-footer custom-border-top">
+      <div class="bg-light py-2"></div>
       <div class="container">
-        <div class="row">
-          <!-- Theo dõi (2 cột) -->
-          <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
-            <h3 class="footer-heading mb-4">Theo dõi</h3>
-            <div class="d-flex flex-column align-items-start">
-              <a href="https://facebook.com" target="_blank" class="mb-2 text-decoration-none" style="color: #3b5998;">
-                <i class="fab fa-facebook-f mr-2"></i> Facebook
-              </a>
-              <a href="https://instagram.com" target="_blank" class="mb-2 text-decoration-none" style="color: #e4405f;">
-                <i class="fab fa-instagram mr-2"></i> Instagram
-              </a>
-              <a href="https://youtube.com" target="_blank" class="mb-2 text-decoration-none" style="color: #ff0000;">
-                <i class="fab fa-youtube mr-2"></i> YouTube
-              </a>
-            </div>
-          </div>
+        <form asp-controller="Home" asp-action="Search" method="get" class="d-flex">
+          <input type="text" name="query" class="form-control me-2" placeholder="Tìm kiếm sản phẩm..." />
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
 
-          <!-- Chính sách (6 cột) -->
-          <div class="col-md-12 col-lg-6 mb-4 mb-lg-0">
-            <h3 class="footer-heading mb-4">Chính sách</h3>
-            <div class="row">
-              <div class="col-6 col-md-4">
-                <ul class="list-unstyled">
-                  <li><a href="https://www.thegioididong.com/chinh-sach-xu-ly-du-lieu-ca-nhan">Dữ liệu cá nhân</a></li>
-                  <li><a href="https://www.thegioididong.com/noi-quy-cua-hang">Nội quy cửa hàng</a></li>
-                  <li><a href="https://www.thegioididong.com/chat-luong-phuc-vu">Chất lượng phục vụ</a></li>
-                </ul>
-              </div>
-              <div class="col-6 col-md-4">
-                <ul class="list-unstyled">
-                  <li><a href="https://www.thegioididong.com/tos">Quy chế TMDT</a></li>
-                  <li><a href="https://www.thegioididong.com/chinh-sach-khui-hop-apple">Đặc trưng</a></li>
-                  <li><a
-                      href="https://www.thegioididong.com/tin-tuc/can-trong-voi-nhung-sieu-thi-thegioididong-khong-chinh-chu--683321">Cảnh
-                      báo giả mạo</a></li>
-                </ul>
-              </div>
-              <div class="col-12 col-md-4">
-                <ul class="list-unstyled">
-                  <li><a href="https://www.thegioididong.com/giao-hang">Vận chuyển</a></li>
-                  <li><a href="https://www.thegioididong.com/bao-hanh">Bảo hành</a></li>
-                  <li><a href="https://www.thegioididong.com/chinh-sach-bao-hanh-san-pham">Đổi trả</a></li>
-                  <li><a href="https://www.thegioididong.com/thanh-toan">Thanh toán</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+  </div>
 
-          <!-- Chúng tôi (4 cột + icon) -->
-          <div class="col-md-6 col-lg-4">
-            <h3 class="footer-heading mb-4">Chúng tôi</h3>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <i class="fas fa-map-marker-alt mr-2 text-danger"></i>
-                256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ
-              </li>
-              <li class="mb-2">
-                <i class="fas fa-phone-alt mr-2 text-success"></i>
-                +84 349 599 120
-              </li>
-              <li>
-                <i class="fas fa-envelope mr-2 text-primary"></i>
-                ththohttt2211032@student.ctuet.edu.vn
-              </li>
-            </ul>
+  @RenderBody()
+
+  <footer class="site-footer custom-border-top">
+    <div class="container">
+      <div class="row">
+        <!-- Theo dõi (2 cột) -->
+        <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
+          <h3 class="footer-heading mb-4">Theo dõi</h3>
+          <div class="d-flex flex-column align-items-start">
+            <a href="https://facebook.com" target="_blank" class="mb-2 text-decoration-none" style="color: #3b5998;">
+              <i class="fab fa-facebook-f mr-2"></i> Facebook
+            </a>
+            <a href="https://instagram.com" target="_blank" class="mb-2 text-decoration-none" style="color: #e4405f;">
+              <i class="fab fa-instagram mr-2"></i> Instagram
+            </a>
+            <a href="https://youtube.com" target="_blank" class="mb-2 text-decoration-none" style="color: #ff0000;">
+              <i class="fab fa-youtube mr-2"></i> YouTube
+            </a>
           </div>
         </div>
 
-        <!-- Copyright -->
-        <div class="row pt-3 mt-3 text-center border-top" style="border-color: #333;">
-          <div class="col-md-12">
-            <p style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #666; margin-bottom: 0;">
-              Made with <span style="color: #ff4f81;">♥️</span> by <strong style="color: #000;">Hữu Thọ - Quốc
-                Dửng</strong>
-            </p>
-            <small style="color: #aaa;">"Be Bold. Be Bright. Be MOON."</small>
+        <!-- Chính sách (6 cột) -->
+        <div class="col-md-12 col-lg-6 mb-4 mb-lg-0">
+          <h3 class="footer-heading mb-4">Chính sách</h3>
+          <div class="row">
+            <div class="col-6 col-md-4">
+              <ul class="list-unstyled">
+                <li><a href="https://www.thegioididong.com/chinh-sach-xu-ly-du-lieu-ca-nhan">Dữ liệu cá nhân</a></li>
+                <li><a href="https://www.thegioididong.com/noi-quy-cua-hang">Nội quy cửa hàng</a></li>
+                <li><a href="https://www.thegioididong.com/chat-luong-phuc-vu">Chất lượng phục vụ</a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-4">
+              <ul class="list-unstyled">
+                <li><a href="https://www.thegioididong.com/tos">Quy chế TMDT</a></li>
+                <li><a href="https://www.thegioididong.com/chinh-sach-khui-hop-apple">Đặc trưng</a></li>
+                <li><a
+                    href="https://www.thegioididong.com/tin-tuc/can-trong-voi-nhung-sieu-thi-thegioididong-khong-chinh-chu--683321">Cảnh
+                    báo giả mạo</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-4">
+              <ul class="list-unstyled">
+                <li><a href="https://www.thegioididong.com/giao-hang">Vận chuyển</a></li>
+                <li><a href="https://www.thegioididong.com/bao-hanh">Bảo hành</a></li>
+                <li><a href="https://www.thegioididong.com/chinh-sach-bao-hanh-san-pham">Đổi trả</a></li>
+                <li><a href="https://www.thegioididong.com/thanh-toan">Thanh toán</a></li>
+              </ul>
+            </div>
           </div>
+        </div>
+
+        <!-- Chúng tôi (4 cột + icon) -->
+        <div class="col-md-6 col-lg-4">
+          <h3 class="footer-heading mb-4">Chúng tôi</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="fas fa-map-marker-alt mr-2 text-danger"></i>
+              256 Nguyễn Văn Cừ, An Hòa, Ninh Kiều, Cần Thơ
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-phone-alt mr-2 text-success"></i>
+              +84 349 599 120
+            </li>
+            <li>
+              <i class="fas fa-envelope mr-2 text-primary"></i>
+              ththohttt2211032@student.ctuet.edu.vn
+            </li>
+          </ul>
         </div>
       </div>
-    </footer>
+
+      <!-- Copyright -->
+      <div class="row pt-3 mt-3 text-center border-top" style="border-color: #333;">
+        <div class="col-md-12">
+          <p style="font-family: 'Poppins', sans-serif; font-size: 15px; color: #666; margin-bottom: 0;">
+            Made with <span style="color: #ff4f81;">♥️</span> by <strong style="color: #000;">Hữu Thọ - Quốc
+              Dửng</strong>
+          </p>
+          <small style="color: #aaa;">"Be Bold. Be Bright. Be MOON."</small>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 
 

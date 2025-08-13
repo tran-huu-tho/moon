@@ -134,6 +134,8 @@ namespace moon.Controllers
             _context.CartItems.RemoveRange(cartItems);
             _context.SaveChanges();
 
+            
+
             return RedirectToAction("ThankYou");
         }
 

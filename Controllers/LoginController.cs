@@ -103,7 +103,7 @@ namespace moon.Controllers
                 <h2>🌙 Chào mừng {name} đến với Moon Shop!</h2>
                 <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Moon</strong> – nơi chuyên cung cấp các phụ kiện anime chất lượng.</p>
                 <p>Bạn đã sẵn sàng khám phá thế giới anime chưa?</p>
-                <p>Hãy <a href='http://localhost:5177/'>truy cập cửa hàng</a> để xem ngay các sản phẩm mới nhất!</p>
+                <p>Hãy <a href='http://localhost:9999/'>truy cập cửa hàng</a> để xem ngay các sản phẩm mới nhất!</p>
                 <hr>
                 <p style='font-size:12px;color:gray;'>Đây là email tự động, vui lòng không trả lời.</p>
             ";

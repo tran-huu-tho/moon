@@ -14,56 +14,56 @@ namespace moon.Controllers
         {
             _context = context;
         }
-        
+
         public async Task<IActionResult> Index()
-{
-    // Lấy sản phẩm nổi bật
-    var featuredProducts = await _context.Products
-        .OrderBy(p => p.Name)
-        .Take(5)
-        .ToListAsync();
-
-    // Lấy sản phẩm phổ biến
-    var popularProducts = await _context.OrderItems
-        .GroupBy(oi => oi.ProductId)
-        .Select(g => new
         {
-            ProductId = g.Key,
-            TotalSold = g.Sum(x => x.Quantity)
-        })
-        .OrderByDescending(x => x.TotalSold)
-        .Take(5)
-        .Join(_context.Products, x => x.ProductId, p => p.Id, (x, p) => p)
-        .ToListAsync();
+            // Lấy sản phẩm nổi bật
+            var featuredProducts = await _context.Products
+                .OrderBy(p => p.Name)
+                .Take(5)
+                .ToListAsync();
 
-    // Lấy danh sách tất cả sản phẩm và nhóm theo CategoryId
-    var allProducts = await _context.Products.ToListAsync();
+            // Lấy sản phẩm phổ biến
+            var popularProducts = await _context.OrderItems
+                .GroupBy(oi => oi.ProductId)
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    TotalSold = g.Sum(x => x.Quantity)
+                })
+                .OrderByDescending(x => x.TotalSold)
+                .Take(5)
+                .Join(_context.Products, x => x.ProductId, p => p.Id, (x, p) => p)
+                .ToListAsync();
 
-    var explore = allProducts
-        .GroupBy(p => p.CategoryId)
-        .Select(g => new
-        {
-            CategoryId = g.Key,
-            Count = g.Count()
-        })
-        .Join(_context.Categories, g => g.CategoryId, c => c.Id, (g, c) => new
-        {
-            c.Id,
-            c.Name,
-            g.Count
-        })
-        .ToList();
+            // Lấy danh sách tất cả sản phẩm và nhóm theo CategoryId
+            var allProducts = await _context.Products.ToListAsync();
 
-    ViewBag.Featured = featuredProducts;
-    ViewBag.Popular = popularProducts;
-    ViewBag.Explore = explore;
+            var explore = allProducts
+                .GroupBy(p => p.CategoryId)
+                .Select(g => new
+                {
+                    CategoryId = g.Key,
+                    Count = g.Count()
+                })
+                .Join(_context.Categories, g => g.CategoryId, c => c.Id, (g, c) => new
+                {
+                    c.Id,
+                    c.Name,
+                    g.Count
+                })
+                .ToList();
 
-    return View("~/Views/Home/Customer/Index.cshtml");
-}
+            ViewBag.Featured = featuredProducts;
+            ViewBag.Popular = popularProducts;
+            ViewBag.Explore = explore;
+
+            return View("~/Views/Home/Customer/Index.cshtml");
+        }
 
 
 
-       public IActionResult Receipt()
+        public IActionResult Receipt()
         {
             string userId = HttpContext.Session.GetString("UserId");
 
@@ -126,11 +126,18 @@ namespace moon.Controllers
         public IActionResult Instruct() => View("~/Views/Home/Customer/Instruct.cshtml");
         public IActionResult Profile() => View("~/Views/Home/Customer/Profile.cshtml");
 
-        public IActionResult Customer(string sortOrder, int page = 1)
+        public IActionResult Customer(string sortOrder, string query, int page = 1)
         {
             int pageSize = 12;
             var products = _context.Products.AsQueryable();
 
+            // Lọc theo từ khóa trước
+            if (!string.IsNullOrEmpty(query))
+            {
+                products = products.Where(p => p.Name.Contains(query));
+            }
+
+            // Áp dụng sắp xếp / lọc theo giá
             switch (sortOrder)
             {
                 case "price_desc":
@@ -159,6 +166,7 @@ namespace moon.Controllers
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             ViewBag.SortOrder = sortOrder;
+            ViewBag.SearchQuery = query; // giữ lại query để truyền vào view
 
             var categoryCounts = _context.Categories
                 .Select(c => new
@@ -172,6 +180,7 @@ namespace moon.Controllers
 
             return View("Customer/Shop", pagedProducts);
         }
+
 
 
 
@@ -230,5 +239,42 @@ namespace moon.Controllers
 
             return View("Customer/Shop", filteredProducts);
         }
+
+        public IActionResult Search(string query, int page = 1)
+        {
+            int pageSize = 12;
+            var products = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                // Lọc theo tên sản phẩm chứa từ khóa
+                products = products.Where(p => p.Name.Contains(query));
+            }
+
+            var totalItems = products.Count();
+            var pagedProducts = products
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var categoryCounts = _context.Categories
+                .Select(c => new
+                {
+                    CategoryName = c.Name,
+                    ProductCount = _context.Products.Count(p => p.CategoryId == c.Id)
+                })
+                .ToList();
+
+            ViewBag.CategoryCounts = categoryCounts;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.SortOrder = "";
+            ViewBag.SelectedCategory = null;
+            ViewBag.SearchQuery = query; // Để hiển thị lại từ khóa nếu muốn
+
+            return View("Customer/Shop", pagedProducts);
+        }
+
     }
 }

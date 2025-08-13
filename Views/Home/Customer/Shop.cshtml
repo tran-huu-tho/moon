@@ -63,8 +63,11 @@
         <div class="row align">
           <div class="col-md-12 mb-5">
             <div class="float-md-left">
-              <h2 class="text-black h5">
-                @if (ViewBag.SelectedCategory != null)
+              <@if (!string.IsNullOrEmpty(ViewBag.SearchQuery)) {
+              <text>Kết quả tìm kiếm cho:
+                "@ViewBag.SearchQuery"</text>
+                                }
+                                else if (ViewBag.SelectedCategory != null)
                 {
                   <text>Sản phẩm thuộc loại: @ViewBag.SelectedCategory</text>
                 }
@@ -72,10 +75,12 @@
                 {
                   <text>Tất cả sản phẩm</text>
                 }
-              </h2>
+
+                </h2>
             </div>
             <div class="d-flex">
               <form asp-controller="Home" asp-action="Customer" method="get" class="ml-md-auto">
+                <input type="hidden" name="query" value="@ViewBag.SearchQuery" />
                 <div class="form-group mb-0">
                   <select class="form-control form-control-sm" name="sortOrder" onchange="this.form.submit()">
                     <option disabled selected>Sắp xếp theo giá</option>
@@ -87,6 +92,7 @@
                   </select>
                 </div>
               </form>
+
             </div>
           </div>
         </div>
@@ -97,14 +103,16 @@
             var imageUrl = item.ImageUrls.FirstOrDefault() ?? "/images/default.png";
             <div class="col-lg-4 col-md-6 col-sm-6 item-entry mb-4">
 
-              <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.Id" class="product-item d-block" style="background-image: url('@imageUrl');">
+              <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.Id" class="product-item d-block"
+                style="background-image: url('@imageUrl');">
                 <div class="product-overlay">
                   <h2 class="item-title">@item.Name</h2>
-                  <strong class="item-price text-danger">@item.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</strong>
-                </div>
-              </a>
-            </div>
-          }
+                  <strong class="item-price text-danger">@item.Price.ToString("C0", new
+                                      System.Globalization.CultureInfo("vi-VN"))</strong>
+              </div>
+            </a>
+          </div>
+                    }
         </div>
 
         <div class="row">
@@ -114,7 +122,8 @@
                 @if (ViewBag.CurrentPage > 1)
                 {
                   <li>
-                    <a asp-action="Customer" asp-route-sortOrder="@ViewBag.SortOrder" asp-route-page="@(ViewBag.CurrentPage - 1)">&lt;</a>
+                    <a asp-action="Customer" asp-route-sortOrder="@ViewBag.SortOrder"
+                      asp-route-page="@(ViewBag.CurrentPage - 1)">&lt;</a>
                   </li>
                 }
 
@@ -135,7 +144,8 @@
                 @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                 {
                   <li>
-                    <a asp-action="Customer" asp-route-sortOrder="@ViewBag.SortOrder" asp-route-page="@(ViewBag.CurrentPage + 1)">&gt;</a>
+                    <a asp-action="Customer" asp-route-sortOrder="@ViewBag.SortOrder"
+                      asp-route-page="@(ViewBag.CurrentPage + 1)">&gt;</a>
                   </li>
                 }
               </ul>
@@ -152,7 +162,8 @@
             @foreach (var cat in ViewBag.CategoryCounts)
             {
               <li class="mb-1">
-                <a asp-controller="Home" asp-action="FilterByCategory" asp-route-categoryName="@cat.CategoryName" class="d-flex">
+                <a asp-controller="Home" asp-action="FilterByCategory" asp-route-categoryName="@cat.CategoryName"
+                  class="d-flex">
                   <span>@cat.CategoryName</span>
                   <span class="text-black ml-auto">(@cat.ProductCount)</span>
                 </a>
